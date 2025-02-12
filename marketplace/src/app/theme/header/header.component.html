@@ -38,10 +38,7 @@
                 </div>
                 
                 <!-- MENÚ DROPDOWN. Al pulsar el icono de perfil (cambiarEstadoMenu()), si el menú está oculto, cambiará de estado y se hará visible -->
-                @if(esVisible === true){
-                  <app-dropdown></app-dropdown>
-                }
-                
+                  <app-dropdown [esVisible]="dropdownEsVisible"></app-dropdown>                          
               </div>
             </div>
           </div>

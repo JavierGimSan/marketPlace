@@ -10,10 +10,11 @@ import { DropdownComponent } from '../../shared/dropdown/dropdown.component';
 })
 export class HeaderComponent {
 
-  esVisible = false;
+  dropdownEsVisible = false;
 
 cambiarEstadoMenu() {
-  this.esVisible = !this.esVisible;
+  this.dropdownEsVisible = !this.dropdownEsVisible;
+  console.log(this.dropdownEsVisible);
 }
 
 }
