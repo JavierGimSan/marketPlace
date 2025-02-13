@@ -6,12 +6,8 @@ import { PromotionsComponent } from './routes/promotions/promotions.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'main-page',
+    redirectTo: 'products',
     pathMatch: 'full'
-  },
-  {
-    path: 'main-page',
-    component: ThemeBaseComponent,
   },
   {
     path: 'products',
