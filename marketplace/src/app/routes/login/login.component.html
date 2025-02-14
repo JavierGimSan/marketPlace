@@ -9,6 +9,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <img
+      routerLink="/products"
       class="mx-auto h-10 w-auto"
       src="https://www.svgrepo.com/show/521518/book-open.svg"
       alt="Your Company" />
@@ -33,7 +34,8 @@
             autocomplete="email"
             required
             email
-            pattern="[a-zA-Z0-9]+.?@[a-zA-Z0-9]+\-?\.[a-z]{2,}"
+            placeholder="Ex: usuario@gmail.com"
+            pattern="[a-zA-Z0-9._]+.?@[a-zA-Z0-9]+\-?\.[a-z]{2,}"
             class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             ngModel
             #email="ngModel" />
@@ -58,6 +60,7 @@
             id="password"
             autocomplete="current-password"
             required
+            placeholder="Introduce la contraseña"
             minlength="6"
             class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             ngModel

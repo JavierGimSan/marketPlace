@@ -1,12 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   HostListener,
   ViewChild,
-  
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { LoginState } from '../../shared/services/login-state';
 
 @Component({
   selector: 'app-profile-menu',
@@ -31,7 +32,7 @@ import { RouterModule } from '@angular/router';
       </div>
 
       @if (dropdownEsVisible) {
-        @if (userLoggedIn) {
+        @if (userLoggedIn()) {
           <div
             class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden"
             role="menu"
@@ -50,6 +51,7 @@ import { RouterModule } from '@angular/router';
               Settings
             </button>
             <button
+              (click)="logout()" 
               class="block px-4 py-2 text-sm text-gray-700 cursor-pointer w-full text-left hover:bg-gray-100"
               type="button">
               Sign out
@@ -77,9 +79,16 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileMenuComponent {
-  @ViewChild('dropdown') dropdown!: ElementRef;
+  constructor(private loginState: LoginState) {}
+
   dropdownEsVisible = false;
-  userLoggedIn = false;
+  userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio 
+  logout() {
+    //Al hacer clic en 'Sign out' Se borra el token y se actualiza la página 
+    localStorage.removeItem('token');
+    window.location.reload();
+  }
+  @ViewChild('dropdown') dropdown!: ElementRef;
   @HostListener('document:click', ['$event']) onClick(event: MouseEvent) {
     if (this.dropdown.nativeElement.contains(event.target as Node)) {
       console.log('click hostListener inside component');
