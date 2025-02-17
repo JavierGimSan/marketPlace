@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
-import { LoginState } from '../../shared/services/login-state';
+import { LoginState } from '../../shared/services/login-state.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ import { LoginState } from '../../shared/services/login-state';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent{
   private httpClient = inject(HttpClient);
 
   constructor(private router: Router, private loginState: LoginState){}

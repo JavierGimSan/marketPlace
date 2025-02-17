@@ -4,10 +4,11 @@ import {
   computed,
   ElementRef,
   HostListener,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LoginState } from '../../shared/services/login-state';
+import { LoginState } from '../../shared/services/login-state.service';
 
 @Component({
   selector: 'app-profile-menu',
@@ -78,13 +79,24 @@ import { LoginState } from '../../shared/services/login-state';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileMenuComponent {
+
+export class ProfileMenuComponent implements OnInit{
   constructor(private loginState: LoginState) {}
+
+  //Al iniciar, si detecta que hay un token guardado en el localStorage, que el estado sea 'logged in'= true
+    ngOnInit(){
+      const token = localStorage.getItem('token');
+      console.log(token);
+  
+      if(token){
+        this.loginState.setTrue();
+      }
+    }
 
   dropdownEsVisible = false;
   userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio 
   logout() {
-    //Al hacer clic en 'Sign out' Se borra el token y se actualiza la página 
+    //Al hacer clic en 'Sign out' se borra el token y se actualiza la página 
     localStorage.removeItem('token');
     window.location.reload();
   }
