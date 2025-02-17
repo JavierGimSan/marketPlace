@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-dropdown',
   imports: [],
@@ -10,11 +10,11 @@ export class DropdownComponent {
 
   @Input() esVisible = true;
   
-  @HostListener('document:click') onClick(){
-    setTimeout(()=> {
-      if(this.esVisible){
-        this.esVisible = false;
-      }  
-    }, 500)
-  }
+  // @HostListener('document:click') onClick(){
+  //   setTimeout(()=> {
+  //     if(this.esVisible){
+  //       this.esVisible = false;
+  //     }  
+  //   }, 500)
+  // }
 }
