@@ -23,7 +23,7 @@ export class LoginComponent{
 
   isFetching = signal(false); //SIGNAL PARA CARGAR EL LOADER.
 
-  //DECLARACIÓN DE ERRORES DE LA SOLUCITUD HTTP
+  //DECLARACIÓN DE ERRORES (SOLUCITUD HTTP)
   errorServer = signal(false);
   errorAuthentication = signal(false);
   errorOthers = signal (false);
