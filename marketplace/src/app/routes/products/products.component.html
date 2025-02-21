@@ -9,19 +9,17 @@
           <div class="mt-4 flex justify-between">
             <div>
               <h3 class="text-sm text-gray-00">
-                <a href="#">
-                  <span aria-hidden="true" class="absolute inset-0"></span>
+                <button> 
+                  <span aria-hidden="true" class="absolute inset-0"  (click)="showInfo()"></span>
                   {{product.name}}
-                </a>
+                </button>
               </h3>
               <p class="mt-1 text-sm text-gray-500">{{product.author}}</p>
             </div>
             <p class="text-sm font-medium text-gray-900">{{product.price}}€</p>
           </div>
         </div>
-      }
-
-      
+      }    
 
       <!-- More products... -->
     </div>

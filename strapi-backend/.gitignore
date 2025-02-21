@@ -69,8 +69,6 @@ $RECYCLE.BIN/
 *.sql
 *.sqlite
 *.sqlite3
-*.tmp
-
 
 ############################
 # Misc.

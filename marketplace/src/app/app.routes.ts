@@ -3,6 +3,7 @@ import { ProductsComponent } from './routes/products/products.component';
 import { ThemeBaseComponent } from './theme/theme-base.component';
 import { PromotionsComponent } from './routes/promotions/promotions.component';
 import { LoginComponent } from './routes/login/login.component';
+import { ProductComponent } from './routes/product/product.component';
 
 export const routes: Routes = [
   {
@@ -16,6 +17,11 @@ export const routes: Routes = [
     children: [{ path: '', component: ProductsComponent }],
   },
   {
+    path: 'product',
+    component: ThemeBaseComponent,
+    children:[{ path: '', component: ProductComponent}],
+  },
+  {
     path: 'promotions',
     component: ThemeBaseComponent,
     children: [{ path: '', component: PromotionsComponent }],
@@ -23,5 +29,6 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-  }
+  },
+
 ];
