@@ -8,7 +8,11 @@ import { Injectable, signal } from "@angular/core";
 export class LoginState {
     userLoggedIn = signal(false);
 
-    setTrue() {
+    setLoggedInTrue() {
         this.userLoggedIn.set(true);
+    }
+
+    setLoggedInFalse(){
+        this.userLoggedIn.set(false);
     }
 }

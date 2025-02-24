@@ -4,11 +4,14 @@ import {
   computed,
   ElementRef,
   HostListener,
-  OnInit,
+  inject,
+  // OnInit,
   ViewChild,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LoginState } from '../../shared/services/login-state.service';
+import { TokenService } from '../../shared/services/token.service';
+import { LoginService } from '../../shared/services/login.service';
 
 @Component({
   selector: 'app-profile-menu',
@@ -80,24 +83,30 @@ import { LoginState } from '../../shared/services/login-state.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class ProfileMenuComponent implements OnInit{
+export class ProfileMenuComponent{
+
   constructor(private loginState: LoginState) {}
 
-  //Al iniciar, si detecta que hay un token guardado en el localStorage, que el estado sea 'logged in'= true
-    ngOnInit(){
-      const token = localStorage.getItem('token');
-      console.log(token);
-  
-      if(token){
-        this.loginState.setTrue();
-      }
-    }
+    private tokenService = inject(TokenService);
+    private loginService = inject(LoginService);
+
+  // Al iniciar, si detecta que hay un token guardado en el localStorage, que el estado sea 'logged in'= true
+    // ngOnInit(){
+    //   const token = this.tokenService.getToken('token');
+    //   if(token){
+    //     const isTokenValid = this.loginService.validateToken(token);   
+    //     if(token && isTokenValid){
+    //       this.loginState.setLoggedInTrue();
+    //     }
+    //   }
+    // }
 
   dropdownEsVisible = false;
   userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio 
   logout() {
-    //Al hacer clic en 'Sign out' se borra el token y se actualiza la página 
-    localStorage.removeItem('token');
+    // Al hacer clic en 'Sign out' se borra el token y se actualiza la página 
+    this.tokenService.deleteToken();
+    this.loginState.setLoggedInFalse();
     window.location.reload();
   }
   @ViewChild('dropdown') dropdown!: ElementRef;
