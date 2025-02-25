@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProductsService } from '../../shared/services/products.service';
 
 @Component({
   selector: 'app-products',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ProductsComponent implements OnInit {
   private httpClient = inject(HttpClient);
+  private productsService = inject(ProductsService);
 
   constructor(private router: Router) {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,7 +20,7 @@ export class ProductsComponent implements OnInit {
   productId = signal<any[]>([]);
 
   ngOnInit() {
-    this.httpClient.get('http://localhost:1337/api/products').subscribe({
+    this.productsService.loadProducts().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
         console.log(response);
@@ -30,19 +32,19 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  showInfo() {
-    this.httpClient.get('http://localhost:1337/api/products').subscribe({
+  showInfo(productId: string) { //Al hacer clic en un producto, extrae su documentId y lo pasa como argunmento
+    this.productsService.loadProduct(`/${productId}`).subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        this.products.set(response.data);
-        this.productId.set(response.data[0]);
-        console.log(this.productId);
+        this.productId.set(response.data);
+        console.log(response.data.documentId);
+        console.log(this.productId());
 
       },
       error: error => {
-        console.log('Error al recopilar productos', error);
+        console.log('Error al cargar producto', error);
       },
     });    
-    this.router.navigate(['/product']);
+    this.router.navigate([`/product/${productId}`]);
   }
 }
