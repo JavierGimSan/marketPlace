@@ -5,7 +5,7 @@
     <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
       @for (product of products(); track product.id){
         <div class="group relative">
-          <img [src]="product.image_url" [alt]="product.name" class="aspect-square inline-block rounded-xl bg-gray-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80">
+          <img [src]="product.image_url" [alt]="product.name" class="aspect-square inline-block rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80">
           <div class="mt-4 flex justify-between">
             <div>
               <h3 class="text-sm text-gray-00">
