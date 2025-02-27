@@ -3,11 +3,22 @@ import { ProductsComponent } from './routes/products/products.component';
 import { ThemeBaseComponent } from './theme/theme-base.component';
 import { PromotionsComponent } from './routes/promotions/promotions.component';
 import { LoginComponent } from './routes/login/login.component';
+import { LandingThemeComponent } from './theme/landing-theme.component';
+import { HomeComponent } from './routes/home/home.component';
 
 export const routes: Routes = [
+  // {
+  //   path: '**',
+  //   redirectTo: 'notFound',
+  // }, APLICAR EN EL FUTURO, NOT FOUND
   {
     path: '',
     redirectTo: 'products',
+    pathMatch: 'full'
+  },
+  {
+    path:'test',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -23,5 +34,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'home',
+    component: LandingThemeComponent,
+    children: [{path: 'test', component: HomeComponent}],
   }
 ];
