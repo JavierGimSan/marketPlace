@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductsService } from '../../shared/services/products.service';
 
 @Component({
@@ -8,12 +8,13 @@ import { ProductsService } from '../../shared/services/products.service';
   styleUrl: './product.component.scss'
 })
 export class ProductComponent implements OnInit{
-  
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: any;
   private productsService = inject(ProductsService);
-  
+  isFetching = signal(false);
+
   ngOnInit() {
+    this.isFetching.set(true);
     const url = window.location.href;
     const productId = url.split('product')[1];
 
@@ -21,7 +22,10 @@ export class ProductComponent implements OnInit{
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
         this.product = response.data;
+      },
+      complete: () => {
+        this.isFetching.set(false);
       }
-    })
+    });
   }  
 }

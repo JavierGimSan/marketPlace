@@ -19,7 +19,10 @@ export class ProductsComponent implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   productId = signal<any[]>([]);
 
+  isFetching = signal(false);
+
   ngOnInit() {
+    this.isFetching.set(true);
     this.productsService.loadProducts().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
@@ -29,22 +32,13 @@ export class ProductsComponent implements OnInit {
       error: error => {
         console.log('Error al recopilar productos', error);
       },
+      complete: ()=> {
+        this.isFetching.set(false);
+      }
     });
   }
 
-  showInfo(productId: string) { //Al hacer clic en un producto, extrae su documentId y lo pasa como argunmento
-    this.productsService.loadProduct(`/${productId}`).subscribe({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      next: (response: any) => {
-        this.productId.set(response.data);
-        console.log(response.data.documentId);
-        console.log(this.productId());
-
-      },
-      error: error => {
-        console.log('Error al cargar producto', error);
-      },
-    });    
+  showInfo(productId: string) {
     this.router.navigate([`/product/${productId}`]);
   }
 }

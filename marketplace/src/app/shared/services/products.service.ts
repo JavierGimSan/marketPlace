@@ -1,5 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
     providedIn: "root",
@@ -8,13 +9,14 @@ import { HttpClient } from "@angular/common/http";
 export class ProductsService {
 
     private httpClient = inject(HttpClient);
+    private apiUrlBase = environment.apiUrlBase;
 
     loadProducts(){
-        return this.httpClient.get('http://localhost:1337/api/products');
+        return this.httpClient.get(`${this.apiUrlBase}/products`);
     }
 
     loadProduct(productId: string){
-        return this.httpClient.get(`http://localhost:1337/api/products${productId}`);
+        return this.httpClient.get(`${this.apiUrlBase}/products${productId}`);
     }
 
 }
