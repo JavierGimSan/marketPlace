@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductsService } from '../../shared/services/products.service';
+import { ErrorImage } from '../../shared/services/error-image.service';
 
 @Component({
   selector: 'app-products',
@@ -10,8 +10,8 @@ import { ProductsService } from '../../shared/services/products.service';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent implements OnInit {
-  private httpClient = inject(HttpClient);
   private productsService = inject(ProductsService);
+  private errorImage = inject(ErrorImage);
 
   constructor(private router: Router) {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,6 +20,9 @@ export class ProductsComponent implements OnInit {
   productId = signal<any[]>([]);
 
   isFetching = signal(false);
+
+  loadError = false;
+  errorImageUrl = this.errorImage.getErrorImage();
 
   ngOnInit() {
     this.isFetching.set(true);
@@ -31,6 +34,8 @@ export class ProductsComponent implements OnInit {
       },
       error: error => {
         console.log('Error al recopilar productos', error);
+        this.loadError = true;
+        this.isFetching.set(false);        
       },
       complete: ()=> {
         this.isFetching.set(false);

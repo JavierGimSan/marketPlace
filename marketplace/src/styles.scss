@@ -1,2 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'tailwindcss';
+
+.error-image-container{
+    width: 100vw;
+    overflow:hidden;
+    display: flex;
+    justify-content: center;
+}

@@ -1,34 +1,53 @@
 <div class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Novedades</h2>
+  @if (loadError) {
+    <div class="error-image-container">
+      <img
+        [src]="errorImageUrl"
+        alt="Imagen con mensaje de error, algo ha ido mal"
+        class="rounded-lg"
+        />
+    </div>
+  } @else {
+    <div
+      class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8 pl-[200px]">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">Novedades</h2>
 
-    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-x-6">
-      @if(!isFetching()){
-        @for (product of products(); track product.id){
-          <div class="group relative">
-            <img [src]="product.image_url" [alt]="product.name" class="aspect-square inline-block rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80">
-            <div class="mt-4 flex justify-between w-full">
-              <div>
-                <h3 class="text-sm text-gray-00">
-                  <button> 
-                    <span aria-hidden="true" class="absolute inset-0 cursor-pointer"  (click)="showInfo(product.documentId)"></span>
-                    {{product.name}}
-                  </button>
-                </h3>
-                <p class="mt-1 text-sm text-gray-500">{{product.author}}</p>
-                <p class="text-sm font-medium text-gray-900">{{product.price}}€</p>
+      <div
+        class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-x-6">
+        @if (!isFetching()) {
+          @for (product of products(); track product.id) {
+            <div class="group relative">
+              <img
+                [src]="product.image_url"
+                [alt]="product.name"
+                class="aspect-square inline-block rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80" />
+              <div class="mt-4 flex justify-between w-full">
+                <div>
+                  <h3 class="text-sm text-gray-00">
+                    <button>
+                      <span
+                        aria-hidden="true"
+                        class="absolute inset-0 cursor-pointer"
+                        (click)="showInfo(product.documentId)"></span>
+                      {{ product.name }}
+                    </button>
+                  </h3>
+                  <p class="mt-1 text-sm text-gray-500">{{ product.author }}</p>
+                  <p class="text-sm font-medium text-gray-900">
+                    {{ product.price }}€
+                  </p>
+                </div>
               </div>
             </div>
+          }
+        } @else {
+          <div class="loader">
+            <div class="justify-content-center jimu-primary-loading"></div>
           </div>
         }
-      }   @else {
-        <div class="loader">
-          <div class="justify-content-center jimu-primary-loading"></div>
-        </div>
-      }  
 
-      <!-- More products... -->
+        <!-- More products... -->
+      </div>
     </div>
-    
-  </div>
+  }
 </div>
