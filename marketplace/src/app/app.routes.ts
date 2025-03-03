@@ -13,14 +13,14 @@ export const routes: Routes = [
   // }, APLICAR EN EL FUTURO, NOT FOUND
   {
     path: '',
-    redirectTo: 'products',
-    pathMatch: 'full'
-  },
-  {
-    path:'test',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  // {
+  //   path:'test',
+  //   redirectTo: 'home',
+  //   pathMatch: 'full'
+  // },
   {
     path: 'products',
     component: ThemeBaseComponent,
@@ -38,6 +38,7 @@ export const routes: Routes = [
   {
     path: 'home',
     component: LandingThemeComponent,
-    children: [{path: 'test', component: HomeComponent}],
+    children: [{path: '', component: HomeComponent}],
   }
 ];
+   

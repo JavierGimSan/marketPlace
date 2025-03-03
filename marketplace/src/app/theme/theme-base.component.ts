@@ -10,7 +10,7 @@ import { RouterOutlet } from '@angular/router';
     <app-header></app-header>
     <div class="main-content">
       <app-sidebar></app-sidebar>
-      <router-outlet></router-outlet> <!--Añadido-->
+      <router-outlet></router-outlet>
     </div>
     `,
   styleUrl: './theme-base.component.scss',
