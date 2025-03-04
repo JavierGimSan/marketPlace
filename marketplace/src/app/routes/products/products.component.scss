@@ -1,3 +1,15 @@
+.error-image-container{
+  width: 85vw;
+  max-height: 82vh;
+  overflow: hidden;
+}
+
+.error-image{
+  width:90vw;
+  position: relative;
+  bottom: 250px;
+}
+
 /* From Uiverse.io by Donewenfu */ 
 .loader {
     position: absolute;
