@@ -4,7 +4,7 @@ import { ProfileMenuComponent } from "../profile-menu/profile-menu.component";
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, ProfileMenuComponent, ProfileMenuComponent],
+  imports: [RouterModule, ProfileMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
