@@ -13,8 +13,8 @@ export class PromotionsComponent implements OnInit{
     this.promotionsService.loadPromotions().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        console.log(response);
-      }
+        console.log(response.data);
+      },
     })    
   }
 
