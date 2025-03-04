@@ -8,8 +8,8 @@ import { RouterOutlet } from '@angular/router';
   imports: [HeaderComponent, SidebarComponent, RouterOutlet],
   template: `
     <app-header></app-header>
-    <div class="main-content">
-      <app-sidebar></app-sidebar>
+    <app-sidebar></app-sidebar>
+    <div class="content">
       <router-outlet></router-outlet>
     </div>
     `,

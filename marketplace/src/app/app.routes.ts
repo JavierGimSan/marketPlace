@@ -5,6 +5,7 @@ import { PromotionsComponent } from './routes/promotions/promotions.component';
 import { LoginComponent } from './routes/login/login.component';
 import { LandingThemeComponent } from './theme/landing-theme.component';
 import { HomeComponent } from './routes/home/home.component';
+import { ProductComponent } from './routes/product/product.component';
 
 export const routes: Routes = [
   // {
@@ -27,6 +28,11 @@ export const routes: Routes = [
     children: [{ path: '', component: ProductsComponent }],
   },
   {
+    path: 'product/:id',
+    component: ThemeBaseComponent,
+    children:[{ path: '', component: ProductComponent}],
+  },
+  {
     path: 'promotions',
     component: ThemeBaseComponent,
     children: [{ path: '', component: PromotionsComponent }],
@@ -39,6 +45,7 @@ export const routes: Routes = [
     path: 'home',
     component: LandingThemeComponent,
     children: [{path: '', component: HomeComponent}],
-  }
+  },
+
 ];
    
