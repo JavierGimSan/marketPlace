@@ -30,6 +30,12 @@
     },
     "genre": {
       "type": "string"
+    },
+    "promotion": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::promotion.promotion",
+      "inversedBy": "products"
     }
   }
 }

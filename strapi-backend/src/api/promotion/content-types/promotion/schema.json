@@ -17,6 +17,15 @@
     },
     "title": {
       "type": "string"
+    },
+    "image": {
+      "type": "text"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "promotion"
     }
   }
 }

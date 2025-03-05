@@ -1,1 +1,12 @@
-<p>promotions works!</p>
+<div>
+  <ul>
+    @for(promotion of promotions(); track promotion.id){
+        <li class="promotion-element" type="button">
+          <h2>{{ promotion.title }}</h2>
+          <div class="promotion-image-container">
+            <img [src]="promotion.image" [alt]="promotion.title" class="promotion-image">
+          </div>
+        </li>
+    }
+  </ul>
+</div>
