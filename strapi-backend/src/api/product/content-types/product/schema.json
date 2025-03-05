@@ -31,9 +31,9 @@
     "genre": {
       "type": "string"
     },
-    "promotion": {
+    "promotions": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::promotion.promotion",
       "inversedBy": "products"
     }

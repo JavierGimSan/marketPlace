@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { PromotionsService } from '../../shared/services/promotions.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-promotions',
@@ -8,6 +9,9 @@ import { PromotionsService } from '../../shared/services/promotions.service';
   styleUrl: './promotions.component.scss'
 })
 export class PromotionsComponent implements OnInit{
+
+  constructor(private router: Router){}
+
   promotionsService = inject(PromotionsService);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,4 +26,9 @@ export class PromotionsComponent implements OnInit{
     })    
   }
 
+  showPromotionProducts(promotionId: string) {
+    this.router.navigate([`/promotion/${promotionId}`]);
+    }
 }
+export { PromotionsService };
+

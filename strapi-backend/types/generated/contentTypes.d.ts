@@ -424,8 +424,8 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     price: Schema.Attribute.Decimal;
-    promotion: Schema.Attribute.Relation<
-      'manyToOne',
+    promotions: Schema.Attribute.Relation<
+      'manyToMany',
       'api::promotion.promotion'
     >;
     publishedAt: Schema.Attribute.DateTime;
@@ -458,7 +458,7 @@ export interface ApiPromotionPromotion extends Struct.CollectionTypeSchema {
       'api::promotion.promotion'
     > &
       Schema.Attribute.Private;
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;

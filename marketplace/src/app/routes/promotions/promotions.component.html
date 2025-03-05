@@ -1,12 +1,17 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div>
   <ul>
-    @for(promotion of promotions(); track promotion.id){
-        <li class="promotion-element" type="button">
-          <h2>{{ promotion.title }}</h2>
-          <div class="promotion-image-container">
-            <img [src]="promotion.image" [alt]="promotion.title" class="promotion-image">
-          </div>
-        </li>
+    @for (promotion of promotions(); track promotion.id) {
+      <li class="promotion-element" type="button" (click)="showPromotionProducts(promotion.documentId)">
+        <h2>{{ promotion.title }}</h2>
+        <div class="promotion-image-container">
+          <img
+            [src]="promotion.image"
+            [alt]="promotion.title"
+            class="promotion-image" />
+        </div>
+      </li>
     }
   </ul>
 </div>
