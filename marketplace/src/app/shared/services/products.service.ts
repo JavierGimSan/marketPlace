@@ -14,6 +14,12 @@ export class ProductsService {
   }
 
   loadProduct(productId: string) {
-    return this.httpClient.get(`${this.apiUrlBase}/products${productId}`);
+    return this.httpClient.get(`${this.apiUrlBase}/products/${productId}`);
+  }
+
+  loadProductPromotions(productId: string) {
+    return this.httpClient.get(
+      `${this.apiUrlBase}/products?populate=*&filters[documentId]=${productId}`
+    );
   }
 }

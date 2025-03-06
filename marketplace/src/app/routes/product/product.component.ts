@@ -10,10 +10,11 @@ import { ErrorImage } from '../../shared/services/error-image.service';
 })
 export class ProductComponent implements OnInit{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  product: any;
   private productsService = inject(ProductsService);
   private errorImage = inject(ErrorImage);
-
+  
+  product: any;
+  promotions = signal<any[]>([]);
   isFetching = signal(false);
 
   loadError = false;
@@ -23,7 +24,7 @@ export class ProductComponent implements OnInit{
   ngOnInit() {
     this.isFetching.set(true);
     const url = window.location.href;
-    const productId = url.split('product')[1];
+    const productId = url.split('product/')[1];
 
     this.productsService.loadProduct(productId).subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,5 +40,13 @@ export class ProductComponent implements OnInit{
         this.isFetching.set(false);
       }
     });
+
+    this.productsService.loadProductPromotions(productId).subscribe({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      next: (response: any) => {
+        console.log(response);
+        this.promotions.set(response);
+      }
+    })
   }  
 }
