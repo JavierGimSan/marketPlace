@@ -22,9 +22,10 @@ export class ProductsComponent implements OnInit {
   isFetching = signal(false);
 
   loadError = false;
-  errorImageUrl = this.errorImage.getErrorImage();
+  errorImageUrl = '';
 
   ngOnInit() {
+    this.errorImageUrl = this.errorImage.getErrorImage();
     this.isFetching.set(true);
     this.productsService.loadProducts().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
