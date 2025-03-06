@@ -1,58 +1,79 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div class="bg-white">
-  <div
-    class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8 pl-[200px]">
-    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Promociones</h2>
+  @if (loadError) {
+    <div class="error-image-container">
+      <img
+        [src]="errorImageUrl"
+        alt="Imagen con mensaje de error, algo ha ido mal"
+        class="error-image" />
+    </div>
+  } @else {
     <div
-      class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-x-6">
-      @if (promotionProducts().length === 0) {
-        <h1>No hay productos con esta oferta</h1>
-      } @else {
-        @for (
-          promotionProduct of promotionProducts();
-          track promotionProduct.id
-        ) {
-          <div
-            class="group relative"
-            (click)="showInfo(promotionProduct.documentId)">
-            <img
-              [src]="promotionProduct.image_url"
-              [alt]="promotionProduct.name"
-              class="aspect-square inline-block rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-            <div class="mt-4 flex justify-between w-full">
-              <div>
-                <h3 class="text-sm text-gray-00">
-                  <button>
-                    <span
-                      aria-hidden="true"
-                      class="absolute inset-0 cursor-pointer"
-                      (click)="showInfo(promotionProduct.documentId)"></span>
-                    {{ promotionProduct.name }}
-                  </button>
-                </h3>
-                <p class="mt-1 text-sm text-gray-500">
-                  {{ promotionProduct.author }}
-                </p>
-                <div class="flex items-center">
-                  <p class="text-sm font-medium text-gray-500">
-                    <s>{{ promotionProduct.price }}€</s>
-                  </p>
-                  <div class="ml-5 px-1 bg-red-500 font-bold text-white">-{{promotionDiscount()}}%</div>
+      class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8 pl-[200px]">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+        Promociones
+      </h2>
+      <div
+        class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-x-6">
+        @if (!isFetching()) {
+          @if (promotionProducts().length === 0) {
+            <h1>No hay productos con esta oferta</h1>
+          } @else {
+            @for (
+              promotionProduct of promotionProducts();
+              track promotionProduct.id
+            ) {
+              <div
+                class="group relative"
+                (click)="showInfo(promotionProduct.documentId)">
+                <img
+                  [src]="promotionProduct.image_url"
+                  [alt]="promotionProduct.name"
+                  class="aspect-square inline-block rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80" />
+                <div class="mt-4 flex justify-between w-full">
+                  <div>
+                    <h3 class="text-sm text-gray-00">
+                      <button>
+                        <span
+                          aria-hidden="true"
+                          class="absolute inset-0 cursor-pointer"
+                          (click)="
+                            showInfo(promotionProduct.documentId)
+                          "></span>
+                        {{ promotionProduct.name }}
+                      </button>
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-500">
+                      {{ promotionProduct.author }}
+                    </p>
+                    <div class="flex items-center">
+                      <p class="text-sm font-medium text-gray-500">
+                        <s>{{ promotionProduct.price }}€</s>
+                      </p>
+                      <div class="ml-5 px-1 bg-red-500 font-bold text-white">
+                        -{{ promotionDiscount() }}%
+                      </div>
+                    </div>
+                    <p class="text-lg font-medium text-red-500">
+                      {{
+                        promotionProduct.price -
+                          promotionProduct.price * (promotionDiscount() / 100)
+                      }}€
+                    </p>
+                  </div>
                 </div>
-                <p class="text-lg font-medium text-red-500">
-                  {{
-                    promotionProduct.price -
-                      promotionProduct.price * (promotionDiscount() / 100)
-                  }}€
-                </p>
               </div>
-            </div>
+            }
+          }
+        } @else {
+          <div class="loader">
+            <div class="justify-content-center jimu-primary-loading"></div>
           </div>
         }
-      }
 
-      <!-- More products... -->
+        <!-- More products... -->
+      </div>
     </div>
-  </div>
+  }
 </div>

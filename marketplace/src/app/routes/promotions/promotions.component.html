@@ -1,23 +1,41 @@
 <!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div>
-  <ul>
-    @for (promotion of promotions(); track promotion.id) {
-      <li
-        class="promotion-element"
-        type="button"
-        (click)="showPromotionProducts(promotion.documentId)">
-        <div class="promotion-image-container">
-          <img class="promotion-image" [src]="promotion.image" alt="promotion.title" />
-        </div>
-        <h2>{{ promotion.title }}</h2>
-        <!-- <div class="promotion-image-container">
-          <img
-            [src]="promotion.image"
-            [alt]="promotion.title"
-            class="promotion-image" />
-        </div> -->
-      </li>
+  @if (loadError) {
+    <div class="error-image-container">
+      <img
+        [src]="errorImageUrl"
+        alt="Imagen con mensaje de error, algo ha ido mal"
+        class="error-image" />
+    </div>
+  } @else {
+    @if (!isFetching()) {
+      @for (promotion of promotions(); track promotion.id) {
+        <ul>
+          <li
+            class="promotion-element"
+            type="button"
+            (click)="showPromotionProducts(promotion.documentId)">
+            <div class="promotion-image-container">
+              <img
+                class="promotion-image"
+                [src]="promotion.image"
+                alt="promotion.title" />
+            </div>
+            <h2>{{ promotion.title }}</h2>
+            <!-- <div class="promotion-image-container">
+              <img
+                [src]="promotion.image"
+                [alt]="promotion.title"
+                class="promotion-image" />
+            </div> -->
+          </li>
+        </ul>
+      }
+    } @else {
+      <div class="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+      </div>
     }
-  </ul>
+  }
 </div>
