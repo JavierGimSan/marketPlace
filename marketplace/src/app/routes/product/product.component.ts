@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductsService } from '../../shared/services/products.service';
 import { ErrorImage } from '../../shared/services/error-image.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -9,11 +10,13 @@ import { ErrorImage } from '../../shared/services/error-image.service';
   styleUrl: './product.component.scss'
 })
 export class ProductComponent implements OnInit{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private productsService = inject(ProductsService);
   private errorImage = inject(ErrorImage);
+  private router = inject(Router) 
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   promotions = signal<any[]>([]);
   isFetching = signal(false);
 
@@ -44,9 +47,13 @@ export class ProductComponent implements OnInit{
     this.productsService.loadProductPromotions(productId).subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        console.log(response);
-        this.promotions.set(response);
+        console.log(response.data[0].promotions);
+        this.promotions.set(response.data[0].promotions);
       }
-    })
-  }  
+    });
+  }
+  
+  redirectPromotion(promotionId: string){
+    this.router.navigate([`/promotion/${promotionId}`]);
+  }
 }
