@@ -4,17 +4,20 @@
   align-items: center;
   width: 80vw;
   height: 20vh;
-  background-image: url("/assets/images/home_background.jpg");
   font-size: 1.5em;
   color: white;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 20px;
   margin-bottom: 10px;
+  overflow: hidden;
   cursor: pointer;
 }
 
 .promotion-element > h2 {
     transition: transform 0.3s ease-in-out, font-size 0.3s ease-in-out;
+    position: absolute;
+    background-color: rgb(128, 128, 128, .4);
+    border-radius: 5px;
+    padding-inline: 20px ;
 }
 
 .promotion-element:hover h2 {
@@ -23,15 +26,12 @@
 
 
 .promotion-image-container{
-    height: 15vh;
-    width: 15vh;
-
+    width: 100%;
 }
 
 .promotion-image{
     width: 100%;
-    margin-left: 10px;
-    filter: drop-shadow(20px 20px 10px rgba(0, 0, 0, .8))
+filter: blur(3px);
 }
 
 // .no-filter{

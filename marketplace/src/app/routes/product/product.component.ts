@@ -30,7 +30,7 @@ export class ProductComponent implements OnInit{
       next: (response: any) => {
         this.product = response.data;
       },error: error => {
-        console.log('Error al recopilar productos', error);
+        console.log('Error al recopilar el producto', error);
         this.loadError = true;
         this.isFetching.set(false);
 

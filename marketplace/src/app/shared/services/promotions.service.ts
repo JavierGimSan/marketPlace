@@ -14,7 +14,7 @@ export class PromotionsService {
   }
 
   loadPromotion(promotionId: string) {
-    return this.httpClient.get(`${this.apiUrlBase}/promotions${promotionId}`);
+    return this.httpClient.get(`${this.apiUrlBase}/promotions/${promotionId}`);
   }
 
   loadPromotionProducts(promotionId: string) {
