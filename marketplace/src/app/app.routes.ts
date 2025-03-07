@@ -18,11 +18,6 @@ export const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
-  // {
-  //   path:'test',
-  //   redirectTo: 'home',
-  //   pathMatch: 'full'
-  // },
   {
     path: 'products',
     component: ThemeBaseComponent,

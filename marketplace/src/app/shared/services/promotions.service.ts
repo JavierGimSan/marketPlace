@@ -22,11 +22,4 @@ export class PromotionsService {
       `${this.apiUrlBase}/promotions?populate=*&filters[documentId]=${promotionId}`
     );
   }
-
-  loadProductPromotions(productId: string){
-    return this.httpClient.get(
-        `${this.apiUrlBase}/promotions?populate=*&filters[documentId]=${productId}`
-      );
-  }
-  
 }
