@@ -20,15 +20,14 @@ export class PromotionComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   promotionDiscount = signal<any>(0); //GUARDO EL DESCUENTO DE LA PROMOCIÓN PARA OPERAR CON EL PRECIO
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  promotionTitle = signal<any>("");
   private promotionsService = inject(PromotionsService);
-    private errorImage = inject(ErrorImage);
-
+  private errorImage = inject(ErrorImage);
+  
   constructor(private router: Router) {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  promotions: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   promotionProducts = signal<any[]>([]);
-
   isFetching = signal(false);
 
   loadError = false;
@@ -58,9 +57,8 @@ export class PromotionComponent implements OnInit {
     this.promotionsService.loadPromotion(promotionId).subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        console.log(typeof(response.data.discount));
         this.promotionDiscount.set(response.data.discount);
-        console.log(typeof(this.promotionDiscount))
+        this.promotionTitle.set(response.data.title);
       }
     })
   }
