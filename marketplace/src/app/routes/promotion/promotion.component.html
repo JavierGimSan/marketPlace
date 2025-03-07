@@ -11,13 +11,13 @@
   } @else {
     <div
       class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8 pl-[200px]">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900">
-        Promociones
+      <h2 class="text-4xl font-bold tracking-tight text-gray-900">
+        {{promotionTitle()}}
       </h2>
       <div
         class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 2xl:gap-x-6">
         @if (!isFetching()) {
-          @if (promotionProducts().length === 0) {
+    @if (promotionProducts().length === 0) {
             <h1>No hay productos con esta oferta</h1>
           } @else {
             @for (
