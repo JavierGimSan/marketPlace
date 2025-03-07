@@ -424,7 +424,43 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     price: Schema.Attribute.Decimal;
+    promotions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::promotion.promotion'
+    >;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPromotionPromotion extends Struct.CollectionTypeSchema {
+  collectionName: 'promotions';
+  info: {
+    description: '';
+    displayName: 'Promotion';
+    pluralName: 'promotions';
+    singularName: 'promotion';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    discount: Schema.Attribute.Integer;
+    image: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::promotion.promotion'
+    > &
+      Schema.Attribute.Private;
+    products: Schema.Attribute.Relation<'manyToMany', 'api::product.product'>;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -942,6 +978,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::home.home': ApiHomeHome;
       'api::product.product': ApiProductProduct;
+      'api::promotion.promotion': ApiPromotionPromotion;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

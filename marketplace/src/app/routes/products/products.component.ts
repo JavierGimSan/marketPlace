@@ -30,7 +30,7 @@ export class ProductsComponent implements OnInit {
     this.productsService.loadProducts().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        console.log(response);
+        console.log(response.data);
         this.products.set(response.data);
       },
       error: error => {

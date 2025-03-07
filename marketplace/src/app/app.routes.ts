@@ -6,6 +6,7 @@ import { LoginComponent } from './routes/login/login.component';
 import { LandingThemeComponent } from './theme/landing-theme.component';
 import { HomeComponent } from './routes/home/home.component';
 import { ProductComponent } from './routes/product/product.component';
+import { PromotionComponent } from './routes/promotion/promotion.component';
 
 export const routes: Routes = [
   // {
@@ -15,13 +16,8 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
-  // {
-  //   path:'test',
-  //   redirectTo: 'home',
-  //   pathMatch: 'full'
-  // },
   {
     path: 'products',
     component: ThemeBaseComponent,
@@ -30,12 +26,17 @@ export const routes: Routes = [
   {
     path: 'product/:id',
     component: ThemeBaseComponent,
-    children:[{ path: '', component: ProductComponent}],
+    children: [{ path: '', component: ProductComponent }],
   },
   {
     path: 'promotions',
     component: ThemeBaseComponent,
     children: [{ path: '', component: PromotionsComponent }],
+  },
+  {
+    path: 'promotion/:id',
+    component: ThemeBaseComponent,
+    children: [{ path: '', component: PromotionComponent }],
   },
   {
     path: 'login',
@@ -44,8 +45,6 @@ export const routes: Routes = [
   {
     path: 'home',
     component: LandingThemeComponent,
-    children: [{path: '', component: HomeComponent}],
+    children: [{ path: '', component: HomeComponent }],
   },
-
 ];
-   
