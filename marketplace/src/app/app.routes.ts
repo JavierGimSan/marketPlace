@@ -7,6 +7,7 @@ import { LandingThemeComponent } from './theme/landing-theme.component';
 import { HomeComponent } from './routes/home/home.component';
 import { ProductComponent } from './routes/product/product.component';
 import { PromotionComponent } from './routes/promotion/promotion.component';
+import { authGuard } from './authentication/guards/auth.guard';
 
 export const routes: Routes = [
   // {
@@ -22,21 +23,25 @@ export const routes: Routes = [
     path: 'products',
     component: ThemeBaseComponent,
     children: [{ path: '', component: ProductsComponent }],
+    canActivate: [authGuard],
   },
   {
     path: 'product/:id',
     component: ThemeBaseComponent,
     children: [{ path: '', component: ProductComponent }],
+    canActivate: [authGuard],
   },
   {
     path: 'promotions',
     component: ThemeBaseComponent,
     children: [{ path: '', component: PromotionsComponent }],
+    canActivate: [authGuard],
   },
   {
     path: 'promotion/:id',
     component: ThemeBaseComponent,
     children: [{ path: '', component: PromotionComponent }],
+    canActivate: [authGuard],
   },
   {
     path: 'login',
