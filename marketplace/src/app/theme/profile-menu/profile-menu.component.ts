@@ -34,16 +34,16 @@ import { Router } from '@angular/router';
           <span class="sr-only">Open user menu</span>
           @if (!userLoggedIn()) {
             <img
-              class="size-8 rounded-full"
+              class="size-10 rounded-full"
               src="https://banner2.cleanpng.com/20190617/iwq/kisspng-computer-icons-portable-network-graphics-clip-art-paula-toth-on-odyssey-1713886393505.webp"
-              alt="" />
+              alt="Icono de usuario por defecto" />
           } @else {
             <!-- Si está loggeado mostrar el icono de la API-->
           <!-- En src poner el dato dinámico que devuelve la url de la imagen-->
             <img
-              class="size-8 rounded-full"
+              class="size-10 rounded-full"
               [src]="avatarUrl()"
-              alt="" />
+              alt="Icono de usuario personalizado" />
           }
         </button>
       </div>
