@@ -18,8 +18,11 @@
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
               <app-profile-menu />
-              <div class="ml-4 cursor-pointer">
+              <div class="relative inline-block ml-4 cursor-pointer">
                 <img class="shopping-cart-icon size-10" src="assets/images/shopping-cart.png" alt="Carrito de la compra">
+                <!-- @if(cartState() > 0){ -->
+                  <div class="absolute flex items-center justify-center bottom-5 left-6 rounded-full border-2 border-white text-white bg-red-500 w-6 h-6">{{ cartStateSignal() }}</div>
+                <!-- } -->
               </div>
             </div>
           </div>

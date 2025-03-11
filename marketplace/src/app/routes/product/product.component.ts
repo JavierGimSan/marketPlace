@@ -15,8 +15,8 @@ export class ProductComponent implements OnInit{
   private productsService = inject(ProductsService);
   private errorImage = inject(ErrorImage);
   private router = inject(Router);
+  private shoppingCartService = inject(ShoppingCartService);
 
-  constructor(public shoppingCartService: ShoppingCartService){}
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: any;
@@ -61,19 +61,19 @@ export class ProductComponent implements OnInit{
     this.router.navigate([`/promotion/${promotionId}`]);
   }
 
-  incrementItems(){
+  incrementItems(){ //En el botón de cantidad, al pulsar '+', suma 1.
     this.shoppingCartService.incrementItems();
   }
 
-  decrementItems(){
+  decrementItems(){ //Al pulsar '-', resta 1.
     this.shoppingCartService.decrementItems();
   }
 
-  getItemsCount(){
+  getItemsCount(){ //Devuelve la cantidad del producto EN EL QUE ESTAMOS ACTUALMENTE para ir acualizando cada vez que se pulsa '+' o '-'.
     return this.shoppingCartService.getItemsCount();
   }
 
-  addToCart(){
+  addToCart(){ //Suma la cantidad del producto al total del carrito. Si cantidad = 9, carrito =+ 9.
     this.shoppingCartService.setCartState();
     console.log(this.shoppingCartService.getCartState());
   }
