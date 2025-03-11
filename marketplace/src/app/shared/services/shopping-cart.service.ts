@@ -1,4 +1,8 @@
-import { signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
 
 export class ShoppingCartService {
  private _itemsCount = signal(0);
@@ -22,7 +26,7 @@ export class ShoppingCartService {
     this._cartState.set(this._cartState() + this._itemsCount());
   }
 
-  getCartState(){
-    return this._cartState();
+  get cartState(){
+    return this._cartState;
   }
 }

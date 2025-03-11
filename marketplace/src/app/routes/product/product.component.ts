@@ -9,7 +9,6 @@ import { ShoppingCartService } from '../../shared/services/shopping-cart.service
   imports: [],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
-  providers: [ShoppingCartService]
 })
 export class ProductComponent implements OnInit{
   private productsService = inject(ProductsService);
@@ -75,6 +74,6 @@ export class ProductComponent implements OnInit{
 
   addToCart(){ //Suma la cantidad del producto al total del carrito. Si cantidad = 9, carrito =+ 9.
     this.shoppingCartService.setCartState();
-    console.log(this.shoppingCartService.getCartState());
+    console.log(this.shoppingCartService.cartState());
   }
 }
