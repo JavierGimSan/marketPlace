@@ -2,17 +2,21 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ProductsService } from '../../shared/services/products.service';
 import { ErrorImage } from '../../shared/services/error-image.service';
 import { Router } from '@angular/router';
+import { ShoppingCartService } from '../../shared/services/shopping-cart.service';
 
 @Component({
   selector: 'app-product',
   imports: [],
   templateUrl: './product.component.html',
-  styleUrl: './product.component.scss'
+  styleUrl: './product.component.scss',
+  providers: [ShoppingCartService]
 })
 export class ProductComponent implements OnInit{
   private productsService = inject(ProductsService);
   private errorImage = inject(ErrorImage);
-  private router = inject(Router) 
+  private router = inject(Router);
+
+  constructor(public shoppingCartService: ShoppingCartService){}
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: any;
@@ -55,5 +59,22 @@ export class ProductComponent implements OnInit{
   
   redirectPromotion(promotionId: string){
     this.router.navigate([`/promotion/${promotionId}`]);
+  }
+
+  incrementItems(){
+    this.shoppingCartService.incrementItems();
+  }
+
+  decrementItems(){
+    this.shoppingCartService.decrementItems();
+  }
+
+  getItemsCount(){
+    return this.shoppingCartService.getItemsCount();
+  }
+
+  addToCart(){
+    this.shoppingCartService.setCartState();
+    console.log(this.shoppingCartService.getCartState());
   }
 }

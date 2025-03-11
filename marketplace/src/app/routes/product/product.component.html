@@ -1,14 +1,12 @@
-
-@if(loadError){
+@if (loadError) {
   <div class="error-image-container">
     <img
       [src]="errorImageUrl"
-      alt="Imagen con mensaje de error, algo ha ido mal"
-      />
+      alt="Imagen con mensaje de error, algo ha ido mal" />
   </div>
-} @else{
-  @if(!isFetching()){
-    <section class="text-gray-700 body-font overflow-hidden bg-white ">
+} @else {
+  @if (!isFetching()) {
+    <section class="text-gray-700 body-font overflow-hidden bg-white">
       <div class="container mb-20 px-5 py-5 mx-auto">
         <div class="lg:w-4/5 mx-auto flex flex-wrap">
           <div class="lg:w-1/2 w-full lg:pl-10 lg:py-0 mt-6 lg:mt-0">
@@ -23,39 +21,79 @@
               >
             </div>
             <div>
-              <h3 class="font-medium">Promociones asociadas: </h3>
-              @for(promotion of promotions(); track promotion.id){
-                <h3 class="mr-75 my-2 p-1 rounded-sm bg-red-500 font-bold text-white cursor-pointer" (click)="redirectPromotion(promotion.documentId)" (keydown)="redirectPromotion(promotion.documentId)" tabindex="0">{{promotion.title}}</h3>
+              <h3 class="font-medium">Promociones asociadas:</h3>
+              @for (promotion of promotions(); track promotion.id) {
+                <h3
+                  class="mr-75 my-2 p-1 rounded-sm bg-red-500 font-bold text-white cursor-pointer"
+                  (click)="redirectPromotion(promotion.documentId)"
+                  (keydown)="redirectPromotion(promotion.documentId)"
+                  tabindex="0">
+                  {{ promotion.title }}
+                </h3>
               }
             </div>
-            <div class="flex justify-center">
+            <div class="flex justify-center mt-10">
               <div class="flex items-center">
                 <span class="mr-3">Cantidad</span>
-                <div class="relative">
-                  <select
-                    class="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                  </select>
-                  <span
-                    class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                    <svg
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      class="w-4 h-4"
-                      viewBox="0 0 24 24">
-                      <path d="M6 9l6 6 6-6"></path>
-                    </svg>
-                  </span>
-                </div>
+
+                <form class="max-w-xs mx-auto">
+                  <div class="relative flex items-center max-w-[8rem]">
+                    <button
+                    (click)="decrementItems()"
+                      type="button"
+                      id="decrement-button"
+                      data-input-counter-decrement="quantity-input"
+                      class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                      <svg
+                        class="w-3 h-3 text-gray-900 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 18 2">
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M1 1h16" />
+                      </svg>
+                    </button>
+                    <input
+                      type="text"
+                      id="quantity-input"
+                      value={{getItemsCount()}}
+                      data-input-counter
+                      aria-describedby="helper-text-explanation"
+                      class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="0"
+                      required />
+                    <button
+                    (click)="incrementItems()"
+                      type="button"
+                      id="increment-button"
+                      data-input-counter-increment="quantity-input"
+                      class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                      <svg
+                        class="w-3 h-3 text-gray-900 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 18 18">
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 1v16M1 9h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
               </div>
               <button
-                class="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
+                (click)="addToCart()"
+                class="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded cursor-pointer"
+                >
                 Añadir al carrito
               </button>
             </div>
@@ -66,13 +104,13 @@
             </h1>
             <h2 class="text-sm title-font text-gray-500 tracking-widest mb-4">
               {{ product.author }}
-            </h2>
+            </h2>     
             <p class="leading-relaxed">{{ product.description }}</p>
           </div>
         </div>
       </div>
     </section>
-  } @else{
+  } @else {
     <div class="loader">
       <div class="justify-content-center jimu-primary-loading"></div>
     </div>
