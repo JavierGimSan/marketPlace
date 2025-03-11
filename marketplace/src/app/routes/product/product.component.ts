@@ -68,12 +68,16 @@ export class ProductComponent implements OnInit{
     this.shoppingCartService.decrementItems();
   }
 
-  getItemsCount(){ //Devuelve la cantidad del producto EN EL QUE ESTAMOS ACTUALMENTE para ir acualizando cada vez que se pulsa '+' o '-'.
-    return this.shoppingCartService.getItemsCount();
+  get itemsCount(){ //Devuelve la cantidad del producto EN EL QUE ESTAMOS ACTUALMENTE para ir acualizando cada vez que se pulsa '+' o '-'.
+    return this.shoppingCartService.itemsCount;
   }
 
   addToCart(){ //Suma la cantidad del producto al total del carrito. Si cantidad = 9, carrito =+ 9.
     this.shoppingCartService.setCartState();
+    this.shoppingCartService.setCountToZero();
+
+
+    
     console.log(this.shoppingCartService.cartState());
   }
 }

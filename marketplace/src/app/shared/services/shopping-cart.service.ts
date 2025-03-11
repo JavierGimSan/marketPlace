@@ -18,12 +18,16 @@ export class ShoppingCartService {
     }
   }
 
-  getItemsCount(){
+  get itemsCount(){
     return this._itemsCount();
   }
 
   setCartState(){
     this._cartState.set(this._cartState() + this._itemsCount());
+  }
+
+  setCountToZero(){
+    this._itemsCount.set(0);
   }
 
   get cartState(){
