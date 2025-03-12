@@ -23,8 +23,8 @@
               >
             </div>
             <div>
-              <h3 class="font-medium">Promociones asociadas: </h3>
               @for(promotion of promotions(); track promotion.id){
+                <h3 class="font-medium">Promociones asociadas: </h3>
                 <h3 class="mr-75 my-2 p-1 rounded-sm bg-red-500 font-bold text-white cursor-pointer" (click)="redirectPromotion(promotion.documentId)" (keydown)="redirectPromotion(promotion.documentId)" tabindex="0">{{promotion.title}}</h3>
               }
             </div>
