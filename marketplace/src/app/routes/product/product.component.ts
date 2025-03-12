@@ -76,8 +76,6 @@ export class ProductComponent implements OnInit{
     this.shoppingCartService.setCartState();
     this.shoppingCartService.setCountToZero();
 
-
-    
     console.log(this.shoppingCartService.cartState());
   }
 }
