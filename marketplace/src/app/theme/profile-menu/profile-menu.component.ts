@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { LoginState } from '../../shared/services/login-state.service';
 import { TokenService } from '../../shared/services/token.service';
 import { LoginService } from '../../shared/services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-menu',
@@ -85,7 +86,7 @@ import { LoginService } from '../../shared/services/login.service';
 
 export class ProfileMenuComponent{
 
-  constructor(private loginState: LoginState) {}
+  constructor(private loginState: LoginState, private router: Router) {}
 
     private tokenService = inject(TokenService);
     private loginService = inject(LoginService);
@@ -104,10 +105,10 @@ export class ProfileMenuComponent{
   dropdownEsVisible = false;
   userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio 
   logout() {
-    // Al hacer clic en 'Sign out' se borra el token y se actualiza la página 
+    // Al hacer clic en 'Sign out' se borra el token y se redirige a 'Home' 
     this.tokenService.deleteToken();
     this.loginState.setLoggedInFalse();
-    window.location.reload();
+    this.router.navigate(['']);
   }
   @ViewChild('dropdown') dropdown!: ElementRef;
   @HostListener('document:click', ['$event']) onClick(event: MouseEvent) {

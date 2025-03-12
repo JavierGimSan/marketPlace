@@ -1,1 +1,35 @@
-<p>promotions works!</p>
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div>
+  @if (loadError) {
+    <div class="error-image-container">
+      <img
+        [src]="errorImageUrl"
+        alt="Imagen con mensaje de error, algo ha ido mal"
+        class="error-image" />
+    </div>
+  } @else {
+    @if (!isFetching()) {
+      @for (promotion of promotions(); track promotion.id) {
+        <ul>
+          <li
+            class="promotion-element"
+            type="button"
+            (click)="showPromotionProducts(promotion.documentId)">
+            <div class="promotion-image-container">
+              <img
+                class="promotion-image"
+                [src]="promotion.image"
+                alt="promotion.title" />
+            </div>
+            <h2>{{ promotion.title }}</h2>
+          </li>
+        </ul>
+      }
+    } @else {
+      <div class="loader">
+        <div class="justify-content-center jimu-primary-loading"></div>
+      </div>
+    }
+  }
+</div>
