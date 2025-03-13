@@ -18,3 +18,4 @@ export class SignalsSimpleStoreService<T> {
     return computed(() => this.state()[key]);
   }
 }
+

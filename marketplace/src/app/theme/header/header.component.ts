@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ProfileMenuComponent } from '../profile-menu/profile-menu.component';
 import { ShoppingCartService } from '../../shared/services/shopping-cart.service';
@@ -12,12 +12,12 @@ import { ShoppingCartService } from '../../shared/services/shopping-cart.service
 export class HeaderComponent {
   dropdownEsVisible = false;
   shoppingCartService = inject(ShoppingCartService);
+  cartState = computed(() => this.shoppingCartService.getTotalCartItems());
 
-  cartState = this.shoppingCartService.cartState;
+  // cartState = this.shoppingCartService.getTotalCartItems(); 
 
   cambiarEstadoMenu() {
     this.dropdownEsVisible = !this.dropdownEsVisible;
     console.log(this.dropdownEsVisible);
   }
-
 }

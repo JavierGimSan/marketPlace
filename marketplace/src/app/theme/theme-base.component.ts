@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HeaderComponent } from "./header/header.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { RouterOutlet } from '@angular/router';
+import { ShoppingCartService } from '../shared/services/shopping-cart.service';
 
 @Component({
   selector: 'app-theme-base',
@@ -16,4 +17,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './theme-base.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ThemeBaseComponent { }
+export class ThemeBaseComponent {
+  shoppingCartService = inject(ShoppingCartService)
+ }

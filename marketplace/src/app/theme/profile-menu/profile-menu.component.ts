@@ -113,7 +113,6 @@ export class ProfileMenuComponent implements OnInit{
     this.userService.getUser().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        console.log(response.username);
         const avatarApiUrl = "https://ui-avatars.com/api/?name=";
         const username = response.username;
         this.avatarUrl.set(`${avatarApiUrl} ${username}`);   
@@ -135,9 +134,9 @@ export class ProfileMenuComponent implements OnInit{
   @ViewChild('dropdown') dropdown!: ElementRef;
   @HostListener('document:click', ['$event']) onClick(event: MouseEvent) {
     if (this.dropdown.nativeElement.contains(event.target as Node)) {
-      console.log('click hostListener inside component');
+      // console.log('click hostListener inside component');
     } else {
-      console.log('click hostListener outside component');
+      // console.log('click hostListener outside component');
       this.dropdownEsVisible = false;
     }
   }
