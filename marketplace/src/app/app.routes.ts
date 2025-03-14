@@ -8,6 +8,7 @@ import { HomeComponent } from './routes/home/home.component';
 import { ProductComponent } from './routes/product/product.component';
 import { PromotionComponent } from './routes/promotion/promotion.component';
 import { authGuard } from './authentication/guards/auth.guard';
+import { ShoppingCartComponent } from './routes/shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   // {
@@ -52,4 +53,10 @@ export const routes: Routes = [
     component: LandingThemeComponent,
     children: [{ path: '', component: HomeComponent }],
   },
+  {
+    path: 'cart',
+    component: LandingThemeComponent,
+    children: [{path: '', component: ShoppingCartComponent}],
+    canActivate: [authGuard],
+  }
 ];
