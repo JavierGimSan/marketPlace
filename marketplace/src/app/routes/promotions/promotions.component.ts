@@ -23,6 +23,7 @@ export class PromotionsComponent implements OnInit{
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   promotions = signal<any[]>([]);
+  
   ngOnInit() {
     this.errorImageUrl = this.errorImage.getErrorImage();
     this.isFetching.set(true);

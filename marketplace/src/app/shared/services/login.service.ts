@@ -19,7 +19,6 @@ export class LoginService {
   }
 
   login(enteredEmail: string, enteredPassword: string) {
-    // Mover a nuevo servicio
     return this.httpClient.post(`${this.apiUrlBase}/auth/local`, {
       // Devuelve un observable, recordar suscribirme.
       identifier: enteredEmail,
