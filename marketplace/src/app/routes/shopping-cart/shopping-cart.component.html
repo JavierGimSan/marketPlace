@@ -1,7 +1,7 @@
 <h1 class="flex justify-center font-bold text-4xl mt-20 mb-20">Carrito</h1>
 
 <!-- @for (product of products(); track product.id) { -->
-<div class="flex ml-30 mr-30 p-5 bg-blue-100">
+<div class="flex ml-30 mr-30 mb-15 p-5 bg-blue-100 rounded-2xl">
   <div class="flex mr-200">
     <div class="mr-5">IMAGEN PRODUCTO</div>
     <div>
@@ -13,6 +13,8 @@
     <div class="flex justify-center mt-10">
       <div class="">
         <span class="mr-3">Cantidad</span>
+
+        <!-- ********INICIO Botón de aumentar/reducir cantidad******** -->
 
         <form class="max-w-xs mx-auto">
           <div class="relative flex items-center max-w-[8rem]">
@@ -64,12 +66,21 @@
             </button>
           </div>
         </form>
+
+        <!-- ********FIN del botón de aumentar/reducir cantidad******** -->
+
       </div>
     </div>
   </div>
-  <div>
-    <div>Icono papelera</div>
+  <div class="flex flex-col items-end ml-20">
+    <div class="bin-icon w-7 cursor-pointer"><img src="assets/images/bin.png" alt="Botón de eliminar producto"></div>
     <h3 class="mt-60 font-bold">Precio €</h3>
   </div>
 </div>
 <!-- } -->
+<div class="flex flex-col items-end mr-30 mb-30">
+    <div>
+        <h2 class="font-bold text-xl mb-5">Total:</h2>
+    </div>
+    <button class="font-bold text-xl bg-blue-900 text-white rounded pl-30 pr-30 pt-4 pb-4 cursor-pointer">Checkout</button>
+</div>

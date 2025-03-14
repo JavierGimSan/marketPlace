@@ -22,6 +22,7 @@ export class ShoppingCartService extends SignalsSimpleStoreService<CartState> {
     }
     this.setState({cartItems: currentCartItems});
     this.setCountToZero();
+    localStorage.setItem("cart", JSON.stringify(currentCartItems)); //Guardar productos en el local storage, sustituye array original por mismo array pero con el nuevo producto. Pasa a JSON porque no acepta otro tipo de dato.
   }
 
     setCountToZero(){

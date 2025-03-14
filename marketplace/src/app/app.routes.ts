@@ -55,7 +55,8 @@ export const routes: Routes = [
   },
   {
     path: 'cart',
-    component: ShoppingCartComponent,
+    component: LandingThemeComponent,
+    children: [{path: '', component: ShoppingCartComponent}],
     canActivate: [authGuard],
   }
 ];
