@@ -12,7 +12,7 @@ import { ShoppingCartService } from '../../shared/services/shopping-cart.service
 export class HeaderComponent {
   dropdownEsVisible = false;
   shoppingCartService = inject(ShoppingCartService);
-  cartState = computed(() => this.shoppingCartService.getTotalCartItems());
+  cartState = computed(() => this.shoppingCartService.getTotalCartItems()); //Cuando el estado del carrito cambia, se actualiza la cantidad de productos
 
   // cartState = this.shoppingCartService.getTotalCartItems(); 
 

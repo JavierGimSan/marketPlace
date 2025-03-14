@@ -22,7 +22,6 @@ export class ShoppingCartService extends SignalsSimpleStoreService<CartState> {
     }
     this.setState({cartItems: currentCartItems});
     this.setCountToZero();
-  
   }
 
     setCountToZero(){
