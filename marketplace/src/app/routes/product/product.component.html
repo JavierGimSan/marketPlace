@@ -21,8 +21,8 @@
               >
             </div>
             <div>
-              <h3 class="font-medium">Promociones asociadas:</h3>
               @for (promotion of promotions(); track promotion.id) {
+                <h3 class="font-medium">Promociones asociadas:</h3>
                 <h3
                   class="mr-75 my-2 p-1 rounded-sm bg-red-500 font-bold text-white cursor-pointer"
                   (click)="redirectPromotion(promotion.documentId)"
@@ -39,7 +39,7 @@
                 <form class="max-w-xs mx-auto">
                   <div class="relative flex items-center max-w-[8rem]">
                     <button
-                    (click)="decrementItems()"
+                      (click)="decrementItems()"
                       type="button"
                       id="decrement-button"
                       data-input-counter-decrement="quantity-input"
@@ -68,7 +68,7 @@
                       placeholder="0"
                       required />
                     <button
-                    (click)="incrementItems()"
+                      (click)="incrementItems()"
                       type="button"
                       id="increment-button"
                       data-input-counter-increment="quantity-input"
@@ -92,8 +92,7 @@
               </div>
               <button
                 (click)="addToCart()"
-                class="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded cursor-pointer"
-                >
+                class="flex ml-10 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded cursor-pointer">
                 Añadir al carrito
               </button>
             </div>
@@ -104,7 +103,7 @@
             </h1>
             <h2 class="text-sm title-font text-gray-500 tracking-widest mb-4">
               {{ product.author }}
-            </h2>     
+            </h2>
             <p class="leading-relaxed">{{ product.description }}</p>
           </div>
         </div>
