@@ -1,3 +1,29 @@
+.cart-title{
+    margin-left: 30%;
+}
+
+.cart-item-container{
+    height: 25vw;
+    margin-left:20%;
+    margin-right:20%;
+}
+
+.product-data-container{
+    width: 30vw;  
+}
+
+.product-image{
+    width: 50%;
+}
+
+.product-quantity-container{
+    margin-top: 15vw;
+}
+
 .bin-icon:hover img {
     filter: brightness(0) saturate(100%) invert(17%) sepia(92%) saturate(7487%) hue-rotate(357deg) brightness(92%) contrast(107%);
+}
+
+.product-price{
+    margin-top: 17vw;
 }
