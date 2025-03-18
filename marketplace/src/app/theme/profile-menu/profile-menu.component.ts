@@ -5,13 +5,15 @@ import {
   ElementRef,
   HostListener,
   inject,
+  OnInit,
+  signal,
   // OnInit,
   ViewChild,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LoginState } from '../../shared/services/login-state.service';
 import { TokenService } from '../../shared/services/token.service';
-import { LoginService } from '../../shared/services/login.service';
+import { UserService } from '../../shared/services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,10 +31,19 @@ import { Router } from '@angular/router';
           aria-haspopup="true">
           <span class="absolute -inset-1.5"></span>
           <span class="sr-only">Open user menu</span>
-          <img
-            class="size-8 rounded-full"
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            alt="" />
+          @if (!userLoggedIn() || avatarUrl() === "") {
+            <img
+              class="size-8 rounded-full"
+              src="https://banner2.cleanpng.com/20190617/iwq/kisspng-computer-icons-portable-network-graphics-clip-art-paula-toth-on-odyssey-1713886393505.webp"
+              alt="" />
+          } @else {
+            <!-- Si está loggeado mostrar el icono de la API-->
+          <!-- En src poner el dato dinámico que devuelve la url de la imagen-->
+            <img
+              class="size-8 rounded-full"
+              [src]="avatarUrl()"
+              alt="" />
+          }
         </button>
       </div>
 
@@ -56,7 +67,7 @@ import { Router } from '@angular/router';
               Settings
             </button>
             <button
-              (click)="logout()" 
+              (click)="logout()"
               class="block px-4 py-2 text-sm text-gray-700 cursor-pointer w-full text-left hover:bg-gray-100"
               type="button">
               Sign out
@@ -83,33 +94,55 @@ import { Router } from '@angular/router';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class ProfileMenuComponent implements OnInit{
+  constructor(
+    private loginState: LoginState,
+    private router: Router
+  ) {}
 
-export class ProfileMenuComponent{
-
-  constructor(private loginState: LoginState, private router: Router) {}
-
-    private tokenService = inject(TokenService);
-    private loginService = inject(LoginService);
-
-  // Al iniciar, si detecta que hay un token guardado en el localStorage, que el estado sea 'logged in'= true
-    // ngOnInit(){
-    //   const token = this.tokenService.getToken('token');
-    //   if(token){
-    //     const isTokenValid = this.loginService.validateToken(token);   
-    //     if(token && isTokenValid){
-    //       this.loginState.setLoggedInTrue();
-    //     }
-    //   }
-    // }
+  private tokenService = inject(TokenService);
+  private userService = inject(UserService);
 
   dropdownEsVisible = false;
-  userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio 
+  userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio
+  avatarUrl = signal("");
+
+  
+  
+  ngOnInit(){
+    this.loadAvatar();
+  }
+
+  loadAvatar(){
+    const avatar = localStorage.getItem('avatarUrl');
+    if(avatar){
+      this.avatarUrl.set(avatar);
+    } else {
+      this.getUsername();
+    }
+  }
+
+  getUsername(){
+    this.userService.getUser().subscribe({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      next: (response: any) => {
+        console.log(response.username);
+        const avatarApiUrl = "https://ui-avatars.com/api/?name=";
+        const username = response.username;
+        const avatarUrl = `${avatarApiUrl} ${username}`
+        this.avatarUrl.set(avatarUrl);
+        localStorage.setItem('avatarUrl', avatarUrl);   
+      }
+    })
+  }
+  
   logout() {
-    // Al hacer clic en 'Sign out' se borra el token y se redirige a 'Home' 
+    // Al hacer clic en 'Sign out' se borra el token y se redirige a 'Home'
     this.tokenService.deleteToken();
     this.loginState.setLoggedInFalse();
     this.router.navigate(['']);
   }
+
   @ViewChild('dropdown') dropdown!: ElementRef;
   @HostListener('document:click', ['$event']) onClick(event: MouseEvent) {
     if (this.dropdown.nativeElement.contains(event.target as Node)) {
