@@ -14,7 +14,6 @@ import { RouterModule } from '@angular/router';
 import { LoginState } from '../../shared/services/login-state.service';
 import { TokenService } from '../../shared/services/token.service';
 import { UserService } from '../../shared/services/user.service';
-import { AvatarService } from '../../shared/services/avatar.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,7 +31,7 @@ import { Router } from '@angular/router';
           aria-haspopup="true">
           <span class="absolute -inset-1.5"></span>
           <span class="sr-only">Open user menu</span>
-          @if (!userLoggedIn()) {
+          @if (!userLoggedIn() || avatarUrl() === "") {
             <img
               class="size-10 rounded-full"
               src="https://banner2.cleanpng.com/20190617/iwq/kisspng-computer-icons-portable-network-graphics-clip-art-paula-toth-on-odyssey-1713886393505.webp"
@@ -103,11 +102,25 @@ export class ProfileMenuComponent implements OnInit{
 
   private tokenService = inject(TokenService);
   private userService = inject(UserService);
-  private avatarService = inject(AvatarService);
 
   dropdownEsVisible = false;
   userLoggedIn = computed(() => this.loginState.userLoggedIn()); //Servicio
   avatarUrl = signal("");
+
+  
+  
+  ngOnInit(){
+    this.loadAvatar();
+  }
+
+  loadAvatar(){
+    const avatar = localStorage.getItem('avatarUrl');
+    if(avatar){
+      this.avatarUrl.set(avatar);
+    } else {
+      this.getUsername();
+    }
+  }
 
   getUsername(){
     this.userService.getUser().subscribe({
@@ -115,15 +128,13 @@ export class ProfileMenuComponent implements OnInit{
       next: (response: any) => {
         const avatarApiUrl = "https://ui-avatars.com/api/?name=";
         const username = response.username;
-        this.avatarUrl.set(`${avatarApiUrl} ${username}`);   
+        const avatarUrl = `${avatarApiUrl} ${username}`
+        this.avatarUrl.set(avatarUrl);
+        localStorage.setItem('avatarUrl', avatarUrl);   
       }
     })
   }
   
-  ngOnInit(){
-    this.getUsername();
-  }
-
   logout() {
     // Al hacer clic en 'Sign out' se borra el token y se redirige a 'Home'
     this.tokenService.deleteToken();
