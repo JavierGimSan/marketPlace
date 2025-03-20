@@ -1,7 +1,7 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ProfileMenuComponent } from '../profile-menu/profile-menu.component';
-import { ShoppingCartService } from '../../shared/services/shopping-cart.service';
+// import { ShoppingCartService } from '../../shared/services/shopping-cart.service';
 
 @Component({
   selector: 'app-header',
@@ -11,8 +11,8 @@ import { ShoppingCartService } from '../../shared/services/shopping-cart.service
 })
 export class HeaderComponent {
   dropdownEsVisible = false;
-  shoppingCartService = inject(ShoppingCartService);
-  cartState = computed(() => this.shoppingCartService.getTotalCartItems()); //Cuando el estado del carrito cambia, se actualiza la cantidad de productos
+  // shoppingCartService = inject(ShoppingCartService);
+  // cartState = computed(() => this.shoppingCartService.getTotalCartItems()); //Cuando el estado del carrito cambia, se actualiza la cantidad de productos
 
   // cartState = this.shoppingCartService.getTotalCartItems(); 
 

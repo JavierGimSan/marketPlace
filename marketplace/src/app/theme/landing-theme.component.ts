@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { RouterOutlet } from '@angular/router';
-import { ShoppingCartService } from '../shared/services/shopping-cart.service';
+// import { ShoppingCartService } from '../shared/services/shopping-cart.service';
 
 @Component({
   selector: 'app-landing-theme',
@@ -12,5 +12,5 @@ import { ShoppingCartService } from '../shared/services/shopping-cart.service';
   `,
 })
 export class LandingThemeComponent {
-  shoppingCartService = inject(ShoppingCartService);
+  // shoppingCartService = inject(ShoppingCartService);
 }

@@ -1,19 +1,78 @@
-import { Component, inject } from '@angular/core';
-import { ShoppingCartService } from '../../shared/services/shopping-cart.service';
-import { RouterModule } from '@angular/router';
+// import { Component, inject } from '@angular/core';
+// import { RouterModule } from '@angular/router';
 
-@Component({
-  selector: 'app-shopping-cart',
-  imports: [RouterModule],
-  templateUrl: './shopping-cart.component.html',
-  styleUrl: './shopping-cart.component.scss'
-})
-export class ShoppingCartComponent {
-  shoppingCartService = inject(ShoppingCartService);
 
-  cartState = this.shoppingCartService.state().cartItems;
+// @Component({
+//   selector: 'app-shopping-cart',
+//   imports: [RouterModule],
+//   templateUrl: './shopping-cart.component.html',
+//   styleUrl: './shopping-cart.component.scss'
+// })
+// export class ShoppingCartComponent {
+//   shoppingCartService = inject(ShoppingCartService);
 
-  printState(){
-    console.log(this.cartState);
-  }
-}
+//   cartState = this.shoppingCartService.state().cartItems;
+
+//   printState(){
+//     console.log(this.cartState);
+//   }
+// }
+//-----------------------------------------------------------------------------------------------------------------------------
+// import { Injectable, signal } from "@angular/core";
+// import { SignalsSimpleStoreService } from "./signalsSimpleStore.service";
+// import { CartState } from "../interfaces/cartState.interface";
+// import { CartItem } from "../interfaces/cartItem.interface";
+
+// //--------------------------------------------------------------------------------
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class ShoppingCartService extends SignalsSimpleStoreService<CartState> {
+//   constructor(){
+//     super();
+//     this.setState({cartItems: []});
+//   }
+  
+//   addToCart(item: CartItem){
+//     const currentCartItems = this.state().cartItems;
+//     const cartItemIndex = currentCartItems.findIndex(b => b.name === item.name);
+//     if (cartItemIndex > -1){
+//       currentCartItems[cartItemIndex].quantity += item.quantity;
+//     } else {
+//       currentCartItems.push(item);
+//     }
+//     this.setState({cartItems: currentCartItems});
+//     this.setCountToZero();
+//     localStorage.setItem("cart", JSON.stringify(currentCartItems)); //Guardar productos en el local storage, sustituye array original por mismo array pero con el nuevo producto. Pasa a JSON porque no acepta otro tipo de dato.
+//   }
+
+//     setCountToZero(){
+//     this._itemsCount.set(0);
+//   }
+
+//   logCartItems() {
+//     console.log('Productos en el carrito:', this.state().cartItems);
+//   }
+
+//   getTotalCartItems() {
+//     return this.state().cartItems.reduce((total, cartItem) => total += cartItem.quantity, 0);
+//   }
+
+//  private _itemsCount = signal(0);
+//  //  private _cartState = signal(0);
+
+//   incrementItems(){
+//     this._itemsCount.set(this._itemsCount() + 1);
+//   }
+
+//   decrementItems(){
+//     if(this._itemsCount() > 0){
+//       this._itemsCount.set(this._itemsCount() - 1);
+//     }
+//   }
+
+//   get itemsCount(){
+//     return this._itemsCount();
+//   }
+
+// }
