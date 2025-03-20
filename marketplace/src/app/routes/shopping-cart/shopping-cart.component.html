@@ -3,7 +3,7 @@
     <h1 class="cart-title font-bold text-5xl mt-20 mb-20 ml-30">Carrito</h1>
 </div>
 
-@for (product of cartState; track product.author) {
+@for (product of cartItems; track product.author) {
 <div class="cart-item-container flex justify-between mb-15 p-5 bg-blue-100 rounded-2xl">
   <div class="product-data-container flex">
     <div class="product-image mr-5"><img [src]="product.image_url" alt="Imagen del producto"></div>

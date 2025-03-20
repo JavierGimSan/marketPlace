@@ -82,6 +82,10 @@ export class ProductComponent implements OnInit {
     return this._itemsCount();
   }
 
+  setCountToZero(){
+    this._itemsCount.set(0);
+  }
+
   agregarAlCarrito(){
     const cartItem: CartItem = {
       ...this.product,
@@ -93,45 +97,7 @@ export class ProductComponent implements OnInit {
     this.store.select(selectCartItems).subscribe(cartItems => {
       console.log(cartItems);
     });
+
+    this.setCountToZero();
   }
-
-  // addToCart() {
-  //   const cartItem: CartItem = {
-  //     ...this.product,
-  //     quantity: this.itemsCount,
-  //   };
-  //   if(cartItem.quantity != 0){ //Si en cantidad hay al menos 1, se añade el producto al carrito
-  //     this.shoppingCartService.addToCart(cartItem);
-  //   }
-  //   console.log(cartItem);
-  //   this.shoppingCartService.logCartItems();
-  // }
-//-------------------------------------------------------------------------------------
-
-
-
-  // addToCart(productId:string){ //Suma la cantidad del producto al total del carrito. Si cantidad = 9, carrito =+ 9.
-  //   this.productsService.loadProduct(productId).subscribe({
-  //     next: (product) => {
-  //       const cartItem: CartItem = {
-  //         name: product.name,
-  //         description: product.description,
-  //         price: product.price,
-  //         author: product.author,
-  //         image_url: product.image_url,
-  //         quantity: 1  // Inicializamos la cantidad en 1
-  //       };
-  //       this.shoppingCartService.addCartItem(cartItem);
-  //     },
-  //     error: (error) => {
-  //       console.error('Error fetching product:', error);
-  //     }
-  //   });
-  // }
-
-  //   this.shoppingCartService.setCartState();
-  //   this.shoppingCartService.setCountToZero();
-
-  //   console.log(this.shoppingCartService.cartState());
-  // }
 }

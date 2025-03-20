@@ -1,78 +1,26 @@
-// import { Component, inject } from '@angular/core';
-// import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectCartItems } from '../../state/selectors/cart.selectors';
+import { CartItem } from '../../shared/interfaces/cartItem.interface';
 
 
-// @Component({
-//   selector: 'app-shopping-cart',
-//   imports: [RouterModule],
-//   templateUrl: './shopping-cart.component.html',
-//   styleUrl: './shopping-cart.component.scss'
-// })
-// export class ShoppingCartComponent {
-//   shoppingCartService = inject(ShoppingCartService);
+@Component({
+  selector: 'app-shopping-cart',
+  imports: [RouterModule],
+  templateUrl: './shopping-cart.component.html',
+  styleUrl: './shopping-cart.component.scss'
+})
+export class ShoppingCartComponent implements OnInit{
+    cartItems: CartItem[] = []
 
-//   cartState = this.shoppingCartService.state().cartItems;
+    constructor(private store: Store){}
 
-//   printState(){
-//     console.log(this.cartState);
-//   }
-// }
-//-----------------------------------------------------------------------------------------------------------------------------
-// import { Injectable, signal } from "@angular/core";
-// import { SignalsSimpleStoreService } from "./signalsSimpleStore.service";
-// import { CartState } from "../interfaces/cartState.interface";
-// import { CartItem } from "../interfaces/cartItem.interface";
-
-// //--------------------------------------------------------------------------------
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class ShoppingCartService extends SignalsSimpleStoreService<CartState> {
-//   constructor(){
-//     super();
-//     this.setState({cartItems: []});
-//   }
-  
-//   addToCart(item: CartItem){
-//     const currentCartItems = this.state().cartItems;
-//     const cartItemIndex = currentCartItems.findIndex(b => b.name === item.name);
-//     if (cartItemIndex > -1){
-//       currentCartItems[cartItemIndex].quantity += item.quantity;
-//     } else {
-//       currentCartItems.push(item);
-//     }
-//     this.setState({cartItems: currentCartItems});
-//     this.setCountToZero();
-//     localStorage.setItem("cart", JSON.stringify(currentCartItems)); //Guardar productos en el local storage, sustituye array original por mismo array pero con el nuevo producto. Pasa a JSON porque no acepta otro tipo de dato.
-//   }
-
-//     setCountToZero(){
-//     this._itemsCount.set(0);
-//   }
-
-//   logCartItems() {
-//     console.log('Productos en el carrito:', this.state().cartItems);
-//   }
-
-//   getTotalCartItems() {
-//     return this.state().cartItems.reduce((total, cartItem) => total += cartItem.quantity, 0);
-//   }
-
-//  private _itemsCount = signal(0);
-//  //  private _cartState = signal(0);
-
-//   incrementItems(){
-//     this._itemsCount.set(this._itemsCount() + 1);
-//   }
-
-//   decrementItems(){
-//     if(this._itemsCount() > 0){
-//       this._itemsCount.set(this._itemsCount() - 1);
-//     }
-//   }
-
-//   get itemsCount(){
-//     return this._itemsCount();
-//   }
-
-// }
+    ngOnInit() {
+        this.store.select(selectCartItems).subscribe(cartItems => {
+            this.cartItems = cartItems;
+            console.log(this.cartItems);
+        })
+    }
+}
