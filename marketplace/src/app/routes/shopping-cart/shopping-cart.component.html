@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div class="flex ml-30">
     <button class="font-bold text-xl bg-blue-900 text-white rounded pl-20 pr-20 cursor-pointer items-center mt-20 mb-20" [routerLink]="'/products'">← Atrás</button>
     <h1 class="cart-title font-bold text-5xl mt-20 mb-20 ml-30">Carrito</h1>
@@ -74,7 +75,7 @@
       </div>
     </div>
     <div class="flex flex-col items-end ml-20 mr-10">
-      <div class="bin-icon w-7 cursor-pointer"><img src="assets/images/bin.png" alt="Botón de eliminar producto"></div>
+      <div class="bin-icon w-7 cursor-pointer"><img src="assets/images/bin.png" alt="Botón de eliminar producto" (click)="deleteProduct(product.name)" tabindex=0 ></div>
       <h3 class="product-price mt-60 font-bold text-3xl">{{product.price * product.quantity}} €</h3>
     </div>
   </div>

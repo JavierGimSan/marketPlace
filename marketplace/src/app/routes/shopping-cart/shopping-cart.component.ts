@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { selectCartItems } from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
+import { deleteFromCart } from '../../state/actions/cart.actions';
 
 
 @Component({
@@ -21,6 +21,10 @@ export class ShoppingCartComponent implements OnInit{
         this.store.select(selectCartItems).subscribe(cartItems => {
             this.cartItems = cartItems;
             console.log(this.cartItems);
-        })
+        });
+    }
+
+    deleteProduct(name: string) {
+        this.store.dispatch(deleteFromCart({name}));
     }
 }
