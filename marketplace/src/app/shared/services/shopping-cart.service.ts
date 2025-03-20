@@ -3,6 +3,7 @@ import { SignalsSimpleStoreService } from "./signalsSimpleStore.service";
 import { CartState } from "../interfaces/cartState.interface";
 import { CartItem } from "../interfaces/cartItem.interface";
 
+//--------------------------------------------------------------------------------
 @Injectable({
   providedIn: 'root'
 })
@@ -55,6 +56,7 @@ export class ShoppingCartService extends SignalsSimpleStoreService<CartState> {
   }
 
 }
+//-------------------------------------------------------------------------------------
 
 // @Injectable({
 //   providedIn: 'root',

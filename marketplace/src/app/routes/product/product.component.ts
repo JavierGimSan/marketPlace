@@ -85,6 +85,9 @@ export class ProductComponent implements OnInit {
     console.log(cartItem);
     this.shoppingCartService.logCartItems();
   }
+//-------------------------------------------------------------------------------------
+
+
 
   // addToCart(productId:string){ //Suma la cantidad del producto al total del carrito. Si cantidad = 9, carrito =+ 9.
   //   this.productsService.loadProduct(productId).subscribe({
