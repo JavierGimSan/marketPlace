@@ -7,6 +7,8 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { cartReducer } from './app/state/reducers/cart.reducer';
 import { environment } from './environments/environment';
+import {provideEffects} from '@ngrx/effects';
+import { CartEffects } from './app/state/effects/cart.effects';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -14,5 +16,6 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideStore({ cart: cartReducer }),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
+    provideEffects(CartEffects),
   ],
 });
