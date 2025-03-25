@@ -92,7 +92,9 @@ export class ProductComponent implements OnInit {
       quantity: this._itemsCount(),
     };
 
-    this.store.dispatch(addToCart({item: cartItem, quantity: cartItem.quantity}));
+    const id = 1;
+
+    this.store.dispatch(addToCart({id, item: cartItem, quantity: cartItem.quantity}));
 
     this.store.select(selectCartItems).subscribe(cartItems => {
       console.log(cartItems);

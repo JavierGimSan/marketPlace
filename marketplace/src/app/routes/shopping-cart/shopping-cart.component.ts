@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCartItems } from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
-import { deleteFromCart } from '../../state/actions/cart.actions';
+// import { deleteFromCartSuccess } from '../../state/actions/cart.actions';
 
 
 @Component({
@@ -24,7 +24,7 @@ export class ShoppingCartComponent implements OnInit{
         });
     }
 
-    deleteProduct(name: string) {
-        this.store.dispatch(deleteFromCart({name}));
-    }
+    // deleteProduct(name: string) {
+    //     this.store.dispatch(deleteFromCartSuccess({name}));
+    // }
 }
