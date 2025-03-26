@@ -1,9 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialCartState } from '../app.state';
-import { addToCartSuccess } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
+import { addToCartSuccess, createOrderSuccess } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
 
 export const cartReducer = createReducer(
   initialCartState,
+
+  on(createOrderSuccess, (state, { quantity, date, state: orderState, documentId}) => ({
+    ...state,
+    order: {
+      quantity,
+      date,
+      state: orderState,
+      documentId,    
+    },
+  })),  
 
   on(addToCartSuccess, (state, { item, quantity }) => { //Añadir producto al carrito
     const existingIndex = state.cartItems.findIndex(cartItem => cartItem.name === item.name);

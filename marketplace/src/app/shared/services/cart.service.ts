@@ -10,12 +10,25 @@ export class CartService {
   private apiUrlBase = environment.apiUrlBase;
   private httpClient = inject(HttpClient);
 
-  addProdToCart(id: number, item: CartItem, quantity: number) {
-    return this.httpClient.post(`${this.apiUrlBase}/orders/${id}`, {
-      item, quantity
+  createOrder(quantity: number, date: Date, state: string) {
+    return this.httpClient.post(`${this.apiUrlBase}/orders`, {
+      data: {
+        quantity,
+        date,
+        state,
+      }
+    });
+  }
+
+  addProdToCart( item: CartItem, quantity: number) {
+    return this.httpClient.put(`${this.apiUrlBase}/orders/`, {
+      data: {
+        item, quantity 
+      }
     });
   }
   //AÑADIR LLAMADAS A LA API
+  //AÑADIR TOKEN AUTH, INTERCEPTOR
   //Post para añadir items al carrito
   //Getters para consultar los productos que hay.
 

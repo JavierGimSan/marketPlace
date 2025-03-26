@@ -12,3 +12,8 @@ export const selectTotalCartItems = createSelector(
   selectCartState,
   (state) => state.cartItems.reduce((total, item) => total+item.quantity, 0)
 );
+
+export const selectOrder = createSelector(
+  selectCartState,
+  (state) => state.order
+);

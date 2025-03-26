@@ -3,8 +3,8 @@ import { ProductsService } from '../../shared/services/products.service';
 import { ErrorImage } from '../../shared/services/error-image.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { addToCart } from '../../state/actions/cart.actions';
-import { selectCartItems } from '../../state/selectors/cart.selectors';
+import { addToCart, createOrderRequest } from '../../state/actions/cart.actions';
+import { selectCartItems, selectCartState } from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
 
 @Component({
@@ -87,6 +87,17 @@ export class ProductComponent implements OnInit {
   }
 
   agregarAlCarrito(){
+    if (!this.orderExists()) { //Si no existe una order se crea una nueva
+      const orderDetails = {
+        quantity: this._itemsCount(),
+        date: new Date(),
+        state: 'active',
+      };  
+      this.store.dispatch(createOrderRequest(orderDetails));
+    }
+
+    console.log(this.product);
+
     const cartItem: CartItem = {
       ...this.product,
       quantity: this._itemsCount(),
@@ -101,5 +112,17 @@ export class ProductComponent implements OnInit {
     });
 
     this.setCountToZero();
+  }
+
+  orderExists() { // Comprueba si ya existe una order y la setea a true o false.
+    let exists = false;
+    this.store.select(selectCartState).subscribe(state => {
+      if(state.order){
+        exists = true;
+      }else{
+        exists = false;
+      }
+    });
+    return exists;
   }
 }

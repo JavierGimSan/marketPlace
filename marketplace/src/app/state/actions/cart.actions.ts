@@ -1,6 +1,21 @@
+
 import { createAction, props } from '@ngrx/store';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
 
+export const createOrderRequest = createAction(
+    '[Cart] Create Order Request',
+    props<{quantity: number, date: Date, state: string,}>()
+)
+
+export const createOrderSuccess = createAction(
+    '[Cart] Create Order Success',
+    props<{quantity: number, date: Date, state: string, documentId: string}>()
+)
+
+export const createOrderError = createAction(
+    '[Cart] Create Order Error',
+    props<{error: string}>()
+)
 
 export const addToCart = createAction( //Desencadena el proceso de añadir un producto.
     '[Cart] Add To Cart',
