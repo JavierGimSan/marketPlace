@@ -5,15 +5,18 @@ import { addToCartSuccess, createOrderSuccess } from '../actions/cart.actions'; 
 export const cartReducer = createReducer(
   initialCartState,
 
-  on(createOrderSuccess, (state, { quantity, date, state: orderState, documentId}) => ({
-    ...state,
-    order: {
-      quantity,
-      date,
-      state: orderState,
-      documentId,    
-    },
-  })),  
+  on(createOrderSuccess, (state, { quantity, date, state: orderState, documentId }) => {
+    console.log('Actualizando el estado:', { quantity, date, state, documentId });
+    return {
+      ...state,
+      order: {
+        quantity,
+        date,
+        state: orderState,
+        documentId,
+      },
+    };
+  }),
 
   on(addToCartSuccess, (state, { item, quantity }) => { //Añadir producto al carrito
     const existingIndex = state.cartItems.findIndex(cartItem => cartItem.name === item.name);

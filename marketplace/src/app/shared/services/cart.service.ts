@@ -21,6 +21,10 @@ export class CartService {
   }
 
   createOrderItem(quantity: number, price: number, productId: string, orderId: string){
+    console.log(quantity,
+      price,
+      productId,
+      orderId,)
     return this.httpClient.post(`${this.apiUrlBase}/order-items`,{
       data: {
         quantity,

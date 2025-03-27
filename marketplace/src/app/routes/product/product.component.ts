@@ -3,9 +3,16 @@ import { ProductsService } from '../../shared/services/products.service';
 import { ErrorImage } from '../../shared/services/error-image.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { addToCart, createOrderRequest } from '../../state/actions/cart.actions';
-import { selectCartItems, selectCartState } from '../../state/selectors/cart.selectors';
+import {
+  addToCart,
+  createOrderRequest,
+} from '../../state/actions/cart.actions';
+import {
+  selectCartItems,
+  selectCartState,
+} from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -14,8 +21,7 @@ import { CartItem } from '../../shared/interfaces/cartItem.interface';
   styleUrl: './product.component.scss',
 })
 export class ProductComponent implements OnInit {
-
-  constructor(private store: Store){}
+  constructor(private store: Store) {}
 
   private productsService = inject(ProductsService);
   private errorImage = inject(ErrorImage);
@@ -72,7 +78,7 @@ export class ProductComponent implements OnInit {
 
   decrementItems() {
     //Al pulsar '-', resta 1.
-    if(this._itemsCount() > 0){
+    if (this._itemsCount() > 0) {
       this._itemsCount.set(this._itemsCount() - 1);
     }
   }
@@ -82,45 +88,67 @@ export class ProductComponent implements OnInit {
     return this._itemsCount();
   }
 
-  setCountToZero(){
+  setCountToZero() {
     this._itemsCount.set(0);
   }
 
-  agregarAlCarrito(){
-    if (!this.orderExists()) { //Si no existe una order se crea una nueva
+  agregarAlCarrito() {
+    if (!this.orderExists()) {
+      //Si no existe una order se crea una nueva
       const orderDetails = {
         quantity: this._itemsCount(),
         date: new Date(),
         state: 'active',
-      };  
+      };
       this.store.dispatch(createOrderRequest(orderDetails));
     }
 
-    console.log(this.product);
+    this.store
+      .select(selectCartState)
+      .pipe(
+        take(1)
+      )
+      .subscribe(state => {
+        const orderId = state.order?.documentId;
+        console.log(state); 
+        if (!orderId) {
+          console.error('No hay documentId');
+          return;
+        }
 
-    const cartItem: CartItem = {
-      ...this.product,
-      quantity: this._itemsCount(),
-    };
+        console.log(this.product);
+        
+        const productId = this.product.id;
+        const cartItem: CartItem = {
+          ...this.product,
+          quantity: this._itemsCount(),
+        };
 
-    const id = 1; // VARIABLE HARDCODEADA DE PRUEBA
-//                                 |
-//                                 V
-    this.store.dispatch(addToCart({id, item: cartItem, quantity: cartItem.quantity}));
+        this.store.dispatch(
+          addToCart({
+            orderId,
+            productId,
+            item: cartItem,
+            quantity: cartItem.quantity,
+          })
+        );
 
-    this.store.select(selectCartItems).subscribe(cartItems => {
-      console.log(cartItems);
-    });
+        this.store.select(selectCartItems).subscribe(cartItems => {
+          console.log(cartItems);
+        });
+      });
 
     this.setCountToZero();
   }
 
-  orderExists() { // Comprueba si ya existe una order y la setea a true o false.
+  orderExists() {
+    // Comprueba si ya existe una order y la setea a true o false.
     let exists = false;
     this.store.select(selectCartState).subscribe(state => {
-      if(state.order){
+      console.log('Estado global del carrito:', state);
+      if (state.order) {
         exists = true;
-      }else{
+      } else {
         exists = false;
       }
     });

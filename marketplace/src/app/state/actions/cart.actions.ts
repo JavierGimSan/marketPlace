@@ -19,7 +19,7 @@ export const createOrderError = createAction(
 export const addToCart = createAction(
   //Desencadena el proceso de añadir un producto.
   '[Cart] Add To Cart',
-  props<{ id: number; item: CartItem; quantity: number }>()
+  props<{ productId: string, orderId: string; item: CartItem; quantity: number }>()
 );
 
 export const addToCartSuccess = createAction(
