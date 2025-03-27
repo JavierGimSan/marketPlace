@@ -20,7 +20,18 @@ export class CartService {
     });
   }
 
-  addProdToCart( item: CartItem, quantity: number) {
+  createOrderItem(quantity: number, price: number, productId: string, orderId: string){
+    return this.httpClient.post(`${this.apiUrlBase}/order-items`,{
+      data: {
+        quantity,
+        price,
+        product: productId,
+        order: orderId,
+      },
+    });
+  }
+
+  addProdToCart( item: CartItem, quantity: number) { //FALTA RECUPERAR orderID PARA ACTUALIZAR LA ORDER CON PRODUCTO.
     return this.httpClient.put(`${this.apiUrlBase}/orders/`, {
       data: {
         item, quantity 

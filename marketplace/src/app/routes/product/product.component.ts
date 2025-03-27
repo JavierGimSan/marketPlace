@@ -103,8 +103,9 @@ export class ProductComponent implements OnInit {
       quantity: this._itemsCount(),
     };
 
-    const id = 1;
-
+    const id = 1; // VARIABLE HARDCODEADA DE PRUEBA
+//                                 |
+//                                 V
     this.store.dispatch(addToCart({id, item: cartItem, quantity: cartItem.quantity}));
 
     this.store.select(selectCartItems).subscribe(cartItems => {

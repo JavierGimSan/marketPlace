@@ -33,6 +33,7 @@ export class CartEffects {
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((orderResponse: any) => {
+              console.log("CONTENIDO ORDER: ", orderResponse);
               return createOrderSuccess({
                 quantity: orderResponse.quantity,
                 date: orderResponse.date,

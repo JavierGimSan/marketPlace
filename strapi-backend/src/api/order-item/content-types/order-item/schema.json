@@ -20,14 +20,15 @@
     },
     "product": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product.product"
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "order_items"
     },
-    "title": {
-      "type": "string"
-    },
-    "author": {
-      "type": "string"
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "order_items"
     }
   }
 }
