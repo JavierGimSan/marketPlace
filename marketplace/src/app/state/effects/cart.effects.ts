@@ -19,10 +19,8 @@ import { catchError, exhaustMap, map, of } from 'rxjs';
 
 @Injectable()
 export class CartEffects {
-  
   private actions$ = inject(Actions);
-  constructor(
-    private cartService: CartService) {}
+  constructor(private cartService: CartService) {}
 
   createOrder$ = createEffect(() =>
     this.actions$.pipe(
@@ -39,12 +37,12 @@ export class CartEffects {
                 state: orderResponse.data.state,
                 documentId: orderResponse.data.id,
               });
-              console.log("CONTENIDO ORDER: ", orderResponse);
+              console.log('CONTENIDO ORDER: ', orderResponse);
               return createOrderSuccess({
                 quantity: orderResponse.data.quantity,
                 date: orderResponse.data.date,
                 state: orderResponse.data.state,
-                documentId: orderResponse.data.documentId
+                documentId: orderResponse.data.documentId,
               });
             }),
             catchError(() => {
@@ -58,14 +56,19 @@ export class CartEffects {
       )
     )
   );
-    
 
   addToCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addToCart),
-      exhaustMap(action =>
-        this.cartService
-          .createOrderItem(action.quantity, action.item.price, action.item.productId, action.orderId)
+      exhaustMap(action => {
+        console.log("TEST action: ", action);
+        return this.cartService
+          .createOrderItem(
+            action.quantity,
+            action.item.price,
+            action.item.documentId, //antes productId
+            action.orderId
+          )
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((resp: any) => {
@@ -81,8 +84,8 @@ export class CartEffects {
                 })
               );
             })
-          )
-      )
+          );
+      })
     )
   );
 

@@ -92,6 +92,22 @@ export class ProductComponent implements OnInit {
     this._itemsCount.set(0);
   }
 
+  orderExists() {
+    // Comprueba si ya existe una order y la setea a true o false.
+    let exists = false;
+    this.store.select(selectCartState).subscribe(state => {
+      console.log('Estado global del carrito:', state);
+      console.log('Datos de la Order: ', state.order);
+      if (state.order) {
+        exists = true;
+      } else {
+        console.log('La order no existía, se ha creado una nueva.');
+        exists = false;
+      }
+    });
+    return exists;
+  }
+
   agregarAlCarrito() {
     if (!this.orderExists()) {
       //Si no existe una order se crea una nueva
@@ -105,24 +121,24 @@ export class ProductComponent implements OnInit {
 
     this.store
       .select(selectCartState)
-      .pipe(
-        take(1)
-      )
+      .pipe(take(1))
       .subscribe(state => {
         const orderId = state.order?.documentId;
-        console.log(state); 
+        console.log('Estado al buscar orderID: ', state);
         if (!orderId) {
           console.error('No hay documentId');
           return;
         }
 
         console.log(this.product);
-        
+
         const productId = this.product.id;
         const cartItem: CartItem = {
           ...this.product,
           quantity: this._itemsCount(),
         };
+
+        console.log("TESTESTEST ORDER ID", orderId);
 
         this.store.dispatch(
           addToCart({
@@ -132,27 +148,10 @@ export class ProductComponent implements OnInit {
             quantity: cartItem.quantity,
           })
         );
-
         this.store.select(selectCartItems).subscribe(cartItems => {
           console.log(cartItems);
         });
       });
-
     this.setCountToZero();
-  }
-
-  orderExists() {
-    // Comprueba si ya existe una order y la setea a true o false.
-    let exists = false;
-    this.store.select(selectCartState).subscribe(state => {
-      console.log('Estado global del carrito:', state);
-      if (state.order) {
-        exists = true;
-      } else {
-        console.log("La order no existía, se ha creado una nueva.")
-        exists = false;
-      }
-    });
-    return exists;
   }
 }
