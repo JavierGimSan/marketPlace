@@ -20,6 +20,20 @@ export class CartService {
     });
   }
 
+  getOrder(orderId:string){
+    return this.httpClient.get(`${this.apiUrlBase}/orders/${orderId}`);
+  }
+
+  updateOrder(documentId: string, quantity: number, date: Date, state: string) {
+    return this.httpClient.post(`${this.apiUrlBase}/orders/${documentId}`, {
+      data: {
+        quantity,
+        date,
+        state,
+      }
+    });
+  }
+
   createOrderItem(total_quantity: number, price: number, productId: string, orderId: string){
     console.log("Contenido a publicar en orderItem", total_quantity,
       price,

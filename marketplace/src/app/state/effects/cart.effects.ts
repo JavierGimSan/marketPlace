@@ -66,7 +66,7 @@ export class CartEffects {
           .createOrderItem(
             action.quantity,
             action.item.price,
-            action.item.documentId, //antes productId
+            action.item.documentId,
             action.orderId
           )
           .pipe(

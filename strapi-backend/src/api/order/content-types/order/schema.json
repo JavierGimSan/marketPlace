@@ -24,16 +24,6 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "order"
     },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
-    "promotions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::promotion.promotion"
-    },
     "state": {
       "type": "string"
     },

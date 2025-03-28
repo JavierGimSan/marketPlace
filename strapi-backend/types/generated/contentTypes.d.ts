@@ -452,11 +452,6 @@ export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::order-item.order-item'
     >;
-    products: Schema.Attribute.Relation<'oneToMany', 'api::product.product'>;
-    promotions: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::promotion.promotion'
-    >;
     publishedAt: Schema.Attribute.DateTime;
     quantity: Schema.Attribute.Integer;
     state: Schema.Attribute.String;
