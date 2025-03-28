@@ -33,7 +33,7 @@ export class CartEffects {
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((orderResponse: any) => {
-              console.log('Datos enviados al reducer:', {
+              console.log('TEST: Datos enviados al reducer:', {
                 quantity: orderResponse.data.quantity,
                 date: orderResponse.data.date,
                 state: orderResponse.data.state,
@@ -85,32 +85,6 @@ export class CartEffects {
       )
     )
   );
-
-  // addToCart$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(addToCart),
-  //     exhaustMap(action =>
-  //       this.cartService
-  //         .addProdToCart(action.item, action.quantity)
-  //         .pipe(
-  //           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //           map((resp: any) => {
-  //             return addToCartSuccess({
-  //               item: resp.item,
-  //               quantity: resp.quantity,
-  //             });
-  //           }),
-  //           catchError(() => {
-  //             return of(
-  //               addToCartError({
-  //                 error: 'Error al añadir producto al carrito',
-  //               })
-  //             );
-  //           })
-  //         )
-  //     )
-  //   )
-  // );
 
   //   loadCart$ = createEffect(() =>
   //     this.actions$.pipe(

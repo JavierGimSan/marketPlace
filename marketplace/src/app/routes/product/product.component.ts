@@ -149,6 +149,7 @@ export class ProductComponent implements OnInit {
       if (state.order) {
         exists = true;
       } else {
+        console.log("La order no existía, se ha creado una nueva.")
         exists = false;
       }
     });
