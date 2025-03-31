@@ -29,7 +29,7 @@ export class CartEffects {
         this.cartService
           .createOrder(action.quantity, action.date, action.state)
           .pipe(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any      
             map((orderResponse: any) => {
               console.log('TEST: Datos enviados al reducer:', {
                 quantity: orderResponse.data.quantity,
@@ -72,6 +72,7 @@ export class CartEffects {
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((resp: any) => {
+              console.log("TESTESTEST!!!", resp);
               return addToCartSuccess({
                 item: resp.item,
                 quantity: resp.quantity,

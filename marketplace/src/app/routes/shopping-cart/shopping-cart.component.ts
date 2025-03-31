@@ -20,7 +20,7 @@ export class ShoppingCartComponent implements OnInit{
     ngOnInit() {
         this.store.select(selectCartItems).subscribe(cartItems => {
             this.cartItems = cartItems;
-            console.log("TESTESTESTESTEST", this.cartItems);
+            console.log("TESTESTESTESTEST", cartItems);
         });
     }
 

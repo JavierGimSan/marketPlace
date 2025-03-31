@@ -7,12 +7,9 @@ import {
   addToCart,
   createOrderRequest,
 } from '../../state/actions/cart.actions';
-import {
-  selectCartItems,
-  selectCartState,
-} from '../../state/selectors/cart.selectors';
+import { selectCartState } from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
-import { take } from 'rxjs';
+import { filter, map, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -92,66 +89,54 @@ export class ProductComponent implements OnInit {
     this._itemsCount.set(0);
   }
 
-  orderExists() {
-    // Comprueba si ya existe una order y la setea a true o false.
-    let exists = false;
-    this.store.select(selectCartState).subscribe(state => {
-      console.log('Estado global del carrito:', state);
-      console.log('Datos de la Order: ', state.order);
-      if (state.order) {
-        exists = true;
-      } else {
-        console.log('La order no existía, se ha creado una nueva.');
-        exists = false;
-      }
-    });
-    return exists;
-  }
-
   agregarAlCarrito() {
-    if (!this.orderExists()) {
-      //Si no existe una order se crea una nueva
-      const orderDetails = {
-        quantity: this._itemsCount(),
-        date: new Date(),
-        state: 'active',
-      };
-      this.store.dispatch(createOrderRequest(orderDetails));
-    }
-
     this.store
       .select(selectCartState)
-      .pipe(take(1))
-      .subscribe(state => {
-        const orderId = state.order?.documentId;
-        console.log('Estado al buscar orderID: ', state);
-        if (!orderId) {
-          console.error('No hay documentId');
-          return;
-        }
+      .pipe(
+        take(1),
+        switchMap(state => {
+          
+          if (state.order) { // Si existe una orden, continuamos con ella
+            return of(state.order.documentId);
+          }
 
-        console.log(this.product);
+          
+          const orderDetails = { // Si no existe, crear
+            quantity: this._itemsCount(),
+            date: new Date(),
+            state: 'active',
+          };
 
-        const productId = this.product.id;
-        const cartItem: CartItem = {
-          ...this.product,
-          quantity: this._itemsCount(),
-        };
+          this.store.dispatch(createOrderRequest(orderDetails));
 
-        console.log("TESTESTEST ORDER ID", orderId);
+          return this.store.select(selectCartState).pipe( // Esperamos a que se complete la creación
+            filter(state => !!state.order),
+            map(state => state.order!.documentId),
+            take(1)
+          );
+        }),
+        switchMap(orderId => {
+          const productId = this.product.id;
+          const cartItem: CartItem = {
+            ...this.product,
+            quantity: this._itemsCount(),
+          };
 
-        this.store.dispatch(
-          addToCart({
-            orderId,
-            productId,
-            item: cartItem,
-            quantity: cartItem.quantity,
-          })
-        );
-        this.store.select(selectCartItems).subscribe(cartItems => {
-          console.log(cartItems);
-        });
+          
+          this.store.dispatch(
+            addToCart({
+              orderId,
+              productId,
+              item: cartItem,
+              quantity: cartItem.quantity,
+            })
+          );
+
+          return of(null); // Si no pongo el 'of(null)' se rompe la cadena y no funciona.
+        })
+      )
+      .subscribe(() => {
+        this.setCountToZero();
       });
-    this.setCountToZero();
   }
 }
