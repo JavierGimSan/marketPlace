@@ -19,7 +19,8 @@ export const cartReducer = createReducer(
   }),
 
   on(addToCartSuccess, (state, { item, quantity }) => { //Añadir producto al carrito
-    const existingIndex = state.cartItems.findIndex(cartItem => cartItem.name === item.name);
+    const existingIndex = state.cartItems.findIndex(cartItem => cartItem.documentId === item.documentId);
+    console.log("CART ITEMS???",state.cartItems)
     if (existingIndex !== -1) {
       
       const updatedCartItems = state.cartItems.map((cartItem, index) =>
