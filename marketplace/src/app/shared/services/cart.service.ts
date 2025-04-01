@@ -25,7 +25,7 @@ export class CartService {
   }
 
   updateOrder(documentId: string, quantity: number, date: Date, state: string) {
-    return this.httpClient.post(`${this.apiUrlBase}/orders/${documentId}`, {
+    return this.httpClient.put(`${this.apiUrlBase}/orders/${documentId}`, {
       data: {
         quantity,
         date,

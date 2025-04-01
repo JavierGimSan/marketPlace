@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectCartItems } from '../../state/selectors/cart.selectors';
+import { selectCartItems, selectCartState } from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
 // import { deleteFromCartSuccess } from '../../state/actions/cart.actions';
 
@@ -18,12 +18,16 @@ export class ShoppingCartComponent implements OnInit{
     constructor(private store: Store){}
 
     ngOnInit() {
+        this.store.select(selectCartState).subscribe(state => {
+            console.log("ESTADO DEL CARRITO", state);
+        });
+
+
         this.store.select(selectCartItems).subscribe(cartItems => {
             this.cartItems = cartItems;
             console.log("TESTESTESTESTEST", cartItems);
         });
     }
-
     // deleteProduct(name: string) {
     //     this.store.dispatch(deleteFromCartSuccess({name}));
     // }

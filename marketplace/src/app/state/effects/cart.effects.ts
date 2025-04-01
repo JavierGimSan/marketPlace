@@ -72,10 +72,10 @@ export class CartEffects {
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((resp: any) => {
-              console.log("TESTESTEST!!!", resp);
+              console.log("TESTESTEST!!!", resp.data.total_quantity);
               return addToCartSuccess({
-                item: resp.item,
-                quantity: resp.quantity,
+                item: resp.data,
+                quantity: resp.data.total_quantity,
               });
             }),
             catchError(() => {
