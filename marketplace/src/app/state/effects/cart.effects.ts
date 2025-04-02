@@ -15,17 +15,20 @@ import {
   // getCartSuccess,
 } from '../actions/cart.actions';
 import { CartService } from '../../shared/services/cart.service';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
+import { selectCartItems } from '../selectors/cart.selectors';
+import { Store, select } from '@ngrx/store';
 
 @Injectable()
 export class CartEffects {
   private actions$ = inject(Actions);
+  private store = inject(Store)
   constructor(private cartService: CartService) {}
 
   createOrder$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createOrderRequest),
-      exhaustMap(action =>
+      switchMap(action =>
         this.cartService
           .createOrder(action.quantity, action.date, action.state)
           .pipe(
@@ -60,19 +63,26 @@ export class CartEffects {
   addToCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addToCart),
-      exhaustMap(action => {
+      switchMap(action => {
+        this.store.pipe(
+          select(selectCartItems),
+          
+        )
         console.log("TEST action: ", action);
         return this.cartService
           .createOrderItem(
             action.quantity,
             action.item.price,
             action.item.documentId,
-            action.orderId
+            action.orderId,
+            action.item.author,
+            action.item.name,
+            action.item.image_url
           )
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((resp: any) => {
-              console.log("TESTESTEST!!!", resp.data.total_quantity);
+              console.log("TESTESTEST!!!", resp.data);
               return addToCartSuccess({
                 item: resp.data,
                 quantity: resp.data.total_quantity,
@@ -89,24 +99,6 @@ export class CartEffects {
       })
     )
   );
-
-  //   loadCart$ = createEffect(() =>
-  //     this.actions$.pipe(
-  //       ofType(getCartRequest),
-  //       exhaustMap(() =>
-  //         this.cartService.loadCart().pipe(
-  //           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //           map((resp: any) => {
-  //             return getCartSuccess(resp);
-  //           }),
-  //           catchError(() => {
-  //             return of(getCartError({
-  //               error: 'Error al cargar carrito'}));
-  //           })
-  //         )
-  //       )
-  //     )
-  //   );
 
   //   deleteCart$ = createEffect(() =>
   //     this.actions$.pipe(

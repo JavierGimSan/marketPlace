@@ -409,15 +409,18 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    author: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    image_url: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::order-item.order-item'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String;
     order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
     price: Schema.Attribute.Decimal;
     product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;

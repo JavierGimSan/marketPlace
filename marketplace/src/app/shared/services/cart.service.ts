@@ -16,11 +16,11 @@ export class CartService {
         quantity,
         date,
         state,
-      }
+      },
     });
   }
 
-  getOrder(orderId:string){
+  getOrder(orderId: string) {
     return this.httpClient.get(`${this.apiUrlBase}/orders/${orderId}`);
   }
 
@@ -30,30 +30,57 @@ export class CartService {
         quantity,
         date,
         state,
-      }
+      },
     });
   }
 
-  createOrderItem(total_quantity: number, price: number, productId: string, orderId: string){
-    console.log("Contenido a publicar en orderItem", total_quantity,
+  createOrderItem(
+    total_quantity: number,
+    price: number,
+    productId: string,
+    orderId: string,
+    author: string,
+    name: string,
+    image_url: string
+  ) {
+    console.log(
+      'Contenido a publicar en orderItem',
+      total_quantity,
       price,
       productId,
-      orderId,)
-    return this.httpClient.post(`${this.apiUrlBase}/order-items`,{
+      orderId,
+      author,
+      name,
+      image_url
+    );
+    return this.httpClient.post(`${this.apiUrlBase}/order-items`, {
       data: {
         total_quantity,
         price,
         product: productId,
         order: orderId,
+        author,
+        name,
+        image_url
       },
     });
   }
 
-  addProdToCart( item: CartItem, quantity: number) { //FALTA RECUPERAR orderID PARA ACTUALIZAR LA ORDER CON PRODUCTO.
+  updateOrderItem(documentId: string, total_quantity: number){
+    return this.httpClient.put(`${this.apiUrlBase}/order-items/${documentId}`, {
+      data: {
+        total_quantity
+      }
+    });
+  }
+
+  addProdToCart(item: CartItem, quantity: number) {
+    //FALTA RECUPERAR orderID PARA ACTUALIZAR LA ORDER CON PRODUCTO.
     return this.httpClient.put(`${this.apiUrlBase}/orders/`, {
       data: {
-        item, quantity 
-      }
+        item,
+        quantity,
+      },
     });
   }
   //AÑADIR LLAMADAS A LA API

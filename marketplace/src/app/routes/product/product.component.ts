@@ -129,6 +129,9 @@ export class ProductComponent implements OnInit {
               productId,
               item: cartItem,
               quantity: cartItem.quantity,
+              author: cartItem.author,
+              name: cartItem.name,
+              image_url: cartItem.image_url
             })
           );
 

@@ -29,6 +29,15 @@
       "relation": "manyToOne",
       "target": "api::order.order",
       "inversedBy": "order_items"
+    },
+    "author": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "text"
     }
   }
 }
