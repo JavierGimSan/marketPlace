@@ -61,16 +61,20 @@ export class CartService {
         order: orderId,
         author,
         name,
-        image_url
+        image_url,
       },
     });
   }
 
-  updateOrderItem(documentId: string, total_quantity: number){
+  getOrderItems(){
+    return this.httpClient.get(`${this.apiUrlBase}/order-items`);
+  }
+
+  updateOrderItem(documentId: string, total_quantity: number) {
     return this.httpClient.put(`${this.apiUrlBase}/order-items/${documentId}`, {
       data: {
-        total_quantity
-      }
+        total_quantity,
+      },
     });
   }
 
@@ -83,10 +87,6 @@ export class CartService {
       },
     });
   }
-  //AÑADIR LLAMADAS A LA API
-  //AÑADIR TOKEN AUTH, INTERCEPTOR
-  //Post para añadir items al carrito
-  //Getters para consultar los productos que hay.
 
   deleteProdFromCart(orderItemId: number) {
     return this.httpClient.delete(`${this.apiUrlBase}/orders/${orderItemId}`);

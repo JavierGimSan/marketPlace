@@ -15,7 +15,7 @@ import {
   // getCartSuccess,
 } from '../actions/cart.actions';
 import { CartService } from '../../shared/services/cart.service';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { selectCartItems } from '../selectors/cart.selectors';
 import { Store, select } from '@ngrx/store';
 
@@ -63,37 +63,74 @@ export class CartEffects {
   addToCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(addToCart),
-      switchMap(action => {
-        this.store.pipe(select(selectCartItems));
-        console.log('TEST action: ', action);
-        return this.cartService
-          .createOrderItem(
-            action.quantity,
-            action.item.price,
-            action.item.documentId,
-            action.orderId,
-            action.item.author,
-            action.item.name,
-            action.item.image_url
+      tap(action => console.log('Action recibida en addToCart:', action)),
+      switchMap(action => 
+        this.cartService.getOrderItems().pipe(
+          switchMap((response: any) => {
+            console.log("RESPONSE", response)
+            const existingOrderItem = response.data[0].find( // ARREGLAR. ALGO POR AQUÍ ESTÁ MAL
+              (orderItem: any) => {
+                console.log('Comparando', orderItem.product.id, 'con', action.item.documentId);
+                return orderItem.documentId === action.item.documentId}
+            );
+  
+            if (existingOrderItem) {
+              // Si el producto ya está en la orden, actualizamos su cantidad
+              return this.cartService
+                .updateOrderItem(existingOrderItem.id, existingOrderItem.total_quantity + action.quantity)
+                .pipe(
+                  map(() =>
+                    addToCartSuccess({
+                      item: { ...existingOrderItem, quantity: existingOrderItem.total_quantity + action.quantity },
+                      quantity: existingOrderItem.total_quantity + action.quantity,
+                    })
+                  ),
+                  catchError(() =>
+                    of(
+                      addToCartError({
+                        error: 'Error al actualizar la cantidad del producto en el carrito',
+                      })
+                    )
+                  )
+                );
+            } else {
+              // Si el producto no está en la orden, lo creamos
+              return this.cartService
+                .createOrderItem(
+                  action.quantity,
+                  action.item.price,
+                  action.item.documentId,
+                  action.orderId,
+                  action.item.author,
+                  action.item.name,
+                  action.item.image_url
+                )
+                .pipe(
+                  map((resp: any) =>
+                    addToCartSuccess({
+                      item: resp.data,
+                      quantity: resp.data.total_quantity,
+                    })
+                  ),
+                  catchError(() =>
+                    of(
+                      addToCartError({
+                        error: 'Error al añadir producto al carrito',
+                      })
+                    )
+                  )
+                );
+            }
+          }),
+          catchError(() =>
+            of(
+              addToCartError({
+                error: 'Error al obtener los items del carrito',
+              })
+            )
           )
-          .pipe(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            map((resp: any) => {
-              console.log('TESTESTEST!!!', resp.data);
-              return addToCartSuccess({
-                item: resp.data,
-                quantity: resp.data.total_quantity,
-              });
-            }),
-            catchError(() => {
-              return of(
-                addToCartError({
-                  error: 'Error al añadir producto al carrito',
-                })
-              );
-            })
-          );
-      })
+        )
+      )
     )
   );
 
