@@ -22,7 +22,7 @@ import { Store, select } from '@ngrx/store';
 @Injectable()
 export class CartEffects {
   private actions$ = inject(Actions);
-  private store = inject(Store)
+  private store = inject(Store);
   constructor(private cartService: CartService) {}
 
   createOrder$ = createEffect(() =>
@@ -32,7 +32,7 @@ export class CartEffects {
         this.cartService
           .createOrder(action.quantity, action.date, action.state)
           .pipe(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any      
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((orderResponse: any) => {
               console.log('TEST: Datos enviados al reducer:', {
                 quantity: orderResponse.data.quantity,
@@ -64,11 +64,8 @@ export class CartEffects {
     this.actions$.pipe(
       ofType(addToCart),
       switchMap(action => {
-        this.store.pipe(
-          select(selectCartItems),
-          
-        )
-        console.log("TEST action: ", action);
+        this.store.pipe(select(selectCartItems));
+        console.log('TEST action: ', action);
         return this.cartService
           .createOrderItem(
             action.quantity,
@@ -82,7 +79,7 @@ export class CartEffects {
           .pipe(
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             map((resp: any) => {
-              console.log("TESTESTEST!!!", resp.data);
+              console.log('TESTESTEST!!!', resp.data);
               return addToCartSuccess({
                 item: resp.data,
                 quantity: resp.data.total_quantity,
