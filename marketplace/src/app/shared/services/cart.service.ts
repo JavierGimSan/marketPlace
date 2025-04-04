@@ -34,6 +34,10 @@ export class CartService {
     });
   }
 
+  deleteOrder(documentId: string){
+    return this.httpClient.delete(`${this.apiUrlBase}/orders/${documentId}`)
+  }
+
   createOrderItem(
     total_quantity: number,
     price: number,
@@ -71,11 +75,16 @@ export class CartService {
   }
 
   updateOrderItem(documentId: string, total_quantity: number) {
+    console.log("DOCUMENT ID: ", documentId);
     return this.httpClient.put(`${this.apiUrlBase}/order-items/${documentId}`, {
       data: {
         total_quantity,
       },
     });
+  }
+
+  deleteOrderItem(documentId: string) {
+    return this.httpClient.delete(`${this.apiUrlBase}/order-items/${documentId}`)
   }
 
   addProdToCart(item: CartItem, quantity: number) {

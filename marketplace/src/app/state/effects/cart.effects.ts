@@ -16,8 +16,7 @@ import {
 } from '../actions/cart.actions';
 import { CartService } from '../../shared/services/cart.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { selectCartItems } from '../selectors/cart.selectors';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class CartEffects {
@@ -66,18 +65,22 @@ export class CartEffects {
       tap(action => console.log('Action recibida en addToCart:', action)),
       switchMap(action => 
         this.cartService.getOrderItems().pipe(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           switchMap((response: any) => {
             console.log("RESPONSE", response)
-            const existingOrderItem = response.data[0].find( // ARREGLAR. ALGO POR AQUÍ ESTÁ MAL
+            const existingOrderItem = response.data.find( // ARREGLAR. ALGO POR AQUÍ ESTÁ MAL
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (orderItem: any) => {
-                console.log('Comparando', orderItem.product.id, 'con', action.item.documentId);
-                return orderItem.documentId === action.item.documentId}
+                console.log('Comparando', orderItem.name, 'con', action.item.name);
+                return orderItem.name === action.item.name}
             );
   
             if (existingOrderItem) {
+              console.log("SI EXISTE");
+              console.log("ORDER EXISTENTE: ", existingOrderItem);
               // Si el producto ya está en la orden, actualizamos su cantidad
               return this.cartService
-                .updateOrderItem(existingOrderItem.id, existingOrderItem.total_quantity + action.quantity)
+                .updateOrderItem(existingOrderItem.documentId, existingOrderItem.total_quantity + action.quantity)
                 .pipe(
                   map(() =>
                     addToCartSuccess({
@@ -95,6 +98,7 @@ export class CartEffects {
                 );
             } else {
               // Si el producto no está en la orden, lo creamos
+              console.log("RESPONSE 2: ",response);
               return this.cartService
                 .createOrderItem(
                   action.quantity,
