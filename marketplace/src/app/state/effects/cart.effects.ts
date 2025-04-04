@@ -82,10 +82,19 @@ export class CartEffects {
               return this.cartService
                 .updateOrderItem(existingOrderItem.documentId, existingOrderItem.total_quantity + action.quantity)
                 .pipe(
+                  tap(() => {
+                    console.log(
+                      'Actualizando cantidad:',
+                      existingOrderItem.total_quantity,
+                      '+',
+                      action.quantity,
+                      '=',
+                      existingOrderItem.total_quantity + action.quantity
+                    );}),
                   map(() =>
                     addToCartSuccess({
-                      item: { ...existingOrderItem, quantity: existingOrderItem.total_quantity + action.quantity },
-                      quantity: existingOrderItem.total_quantity + action.quantity,
+                      item: { ...existingOrderItem, quantity: existingOrderItem.total_quantity + action.quantity },//
+                      quantity: action.quantity, //
                     })
                   ),
                   catchError(() =>
@@ -109,7 +118,8 @@ export class CartEffects {
                   action.item.name,
                   action.item.image_url
                 )
-                .pipe(
+                .pipe(                
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   map((resp: any) =>
                     addToCartSuccess({
                       item: resp.data,

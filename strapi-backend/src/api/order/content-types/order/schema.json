@@ -31,7 +31,7 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
-      "mappedBy": "order"
+      "onDelete": "CASCADE"
     }
   }
 }
