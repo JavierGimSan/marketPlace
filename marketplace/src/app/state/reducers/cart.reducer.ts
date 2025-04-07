@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialCartState } from '../app.state';
-import { addToCartSuccess, createOrderSuccess } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
+import { addToCartSuccess, createOrderSuccess, deleteFromCartSuccess,  } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
 
 export const cartReducer = createReducer(
   initialCartState,
@@ -40,8 +40,8 @@ export const cartReducer = createReducer(
     }
   }),
   
-  // on(deleteFromCartSuccess, (state, {name}) => ({ //Eliminar producto del carrito
-  //   ...state,
-  //   cartItems: state.cartItems.filter(item => item.name !== name)
-  // }))
+  on(deleteFromCartSuccess, (state, {documentId}) => ({ //Eliminar producto del carrito
+    ...state,
+    cartItems: state.cartItems.filter(item => item.documentId !== documentId) 
+  })),
 );

@@ -97,8 +97,8 @@ export class CartService {
     });
   }
 
-  deleteProdFromCart(orderItemId: number) {
-    return this.httpClient.delete(`${this.apiUrlBase}/orders/${orderItemId}`);
+  deleteProdFromCart(orderItemId: string) {
+    return this.httpClient.delete(`${this.apiUrlBase}/order-items/${orderItemId}`);
   }
 
   loadCart(orderId: number) {

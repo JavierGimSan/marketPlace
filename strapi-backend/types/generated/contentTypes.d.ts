@@ -421,7 +421,7 @@ export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
-    order: Schema.Attribute.Relation<'manyToOne', 'api::order.order'>;
+    order: Schema.Attribute.Relation<'oneToOne', 'api::order.order'>;
     price: Schema.Attribute.Decimal;
     product: Schema.Attribute.Relation<'manyToOne', 'api::product.product'>;
     publishedAt: Schema.Attribute.DateTime;

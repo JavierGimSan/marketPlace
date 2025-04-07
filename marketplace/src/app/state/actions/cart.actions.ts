@@ -34,19 +34,20 @@ export const addToCartError = createAction(
   props<{ error: string }>()
 );
 
-// export const deleteFromCartRequest = createAction( //Action para iniciar eliminación de producto.
-//     '[Cart] Delete from Cart Request',
-// );
+export const deleteFromCartRequest = createAction( //Action para iniciar eliminación de producto.
+    '[Cart] Delete from Cart Request',
+    props<{documentId: string}>()
+);
 
-// export const deleteFromCartSuccess = createAction( //Action para eliminar producto, paso el name del producto a eliminar.
-//     '[Cart] Delete from Cart Error',
-//     props<{name: string}>()
-// );
+export const deleteFromCartSuccess = createAction( //Action para eliminar producto, paso el name del producto a eliminar.
+    '[Cart] Delete from Cart Error',
+    props<{documentId: string}>()
+);
 
-// export const deleteFromCartError = createAction( //Si hay un ERROR a la hora de BORRAR un producto a la BBDD, se ejecuta esta action y no se modifica el store.
-//     '[Cart] Delete from Cart Success',
-//     props<{error: string}>()
-// );
+export const deleteFromCartError = createAction( //Si hay un ERROR a la hora de BORRAR un producto a la BBDD, se ejecuta esta action y no se modifica el store.
+    '[Cart] Delete from Cart Success',
+    props<{error: string}>()
+);
 
 // export const getCartRequest = createAction( //Action para iniciar la carga de un carrito
 //     '[Cart] Get Cart Request',

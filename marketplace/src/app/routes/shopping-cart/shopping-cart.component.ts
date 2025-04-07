@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectCartItems, selectCartState } from '../../state/selectors/cart.selectors';
 import { CartItem } from '../../shared/interfaces/cartItem.interface';
+import { deleteFromCartRequest } from '../../state/actions/cart.actions';
 // import { deleteFromCartSuccess } from '../../state/actions/cart.actions';
 
 
@@ -28,7 +29,8 @@ export class ShoppingCartComponent implements OnInit{
             console.log("TESTESTESTESTEST", cartItems);
         });
     }
-    // deleteProduct(name: string) {
-    //     this.store.dispatch(deleteFromCartSuccess({name}));
-    // }
+    deleteProduct(documentId: string) {
+        this.store.dispatch(deleteFromCartRequest({documentId}));
+        console.log("TEST DOCUMENTID ORDERITEM: ", documentId);
+    }
 }
