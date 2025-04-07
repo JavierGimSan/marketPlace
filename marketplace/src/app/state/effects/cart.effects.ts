@@ -66,34 +66,24 @@ export class CartEffects {
     this.actions$.pipe(
       ofType(addToCart),
       tap(action => console.log('Action recibida en addToCart:', action)),
-      switchMap(action =>
+      switchMap(action => 
         this.cartService.getOrderItems().pipe(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           switchMap((response: any) => {
-            console.log('RESPONSE', response);
-            const existingOrderItem = response.data.find(
-              // ARREGLAR. ALGO POR AQUÍ ESTÁ MAL
+            console.log("RESPONSE", response)
+            const existingOrderItem = response.data.find( // ARREGLAR. ALGO POR AQUÍ ESTÁ MAL
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               (orderItem: any) => {
-                console.log(
-                  'Comparación nombres: ',
-                  orderItem.name,
-                  ' - ',
-                  action.item.name
-                );
-                return orderItem.name === action.item.name;
-              }
+                console.log('Comparación nombres: ', orderItem.name, ' - ', action.item.name);
+                return orderItem.name === action.item.name}
             );
-
+  
             if (existingOrderItem) {
-              console.log('SI EXISTE');
-              console.log('ORDER EXISTENTE: ', existingOrderItem);
+              console.log("SI EXISTE");
+              console.log("ORDER EXISTENTE: ", existingOrderItem);
               // Si el producto ya está en la orden, actualizamos su cantidad
               return this.cartService
-                .updateOrderItem(
-                  existingOrderItem.documentId,
-                  existingOrderItem.total_quantity + action.quantity
-                )
+                .updateOrderItem(existingOrderItem.documentId, existingOrderItem.total_quantity + action.quantity)
                 .pipe(
                   tap(() => {
                     console.log(
@@ -103,30 +93,24 @@ export class CartEffects {
                       action.quantity,
                       '=',
                       existingOrderItem.total_quantity + action.quantity
-                    );
-                  }),
+                    );}),
                   map(() =>
                     addToCartSuccess({
-                      item: {
-                        ...existingOrderItem,
-                        quantity:
-                          existingOrderItem.total_quantity + action.quantity,
-                      }, //
+                      item: { ...existingOrderItem, quantity: existingOrderItem.total_quantity + action.quantity },//
                       quantity: action.quantity, //
                     })
                   ),
                   catchError(() =>
                     of(
                       addToCartError({
-                        error:
-                          'Error al actualizar la cantidad del producto en el carrito',
+                        error: 'Error al actualizar la cantidad del producto en el carrito',
                       })
                     )
                   )
                 );
             } else {
               // Si el producto no está en la orden, lo creamos
-              console.log('RESPONSE 2: ', response);
+              console.log("RESPONSE 2: ",response);
               return this.cartService
                 .createOrderItem(
                   action.quantity,
@@ -137,7 +121,7 @@ export class CartEffects {
                   action.item.name,
                   action.item.image_url
                 )
-                .pipe(
+                .pipe(                
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   map((resp: any) =>
                     addToCartSuccess({
@@ -167,27 +151,24 @@ export class CartEffects {
     )
   );
 
-  deleteCart$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(deleteFromCartRequest),
-      tap(action => {
-        console.log('ACTION RECIBIDA EN DELETE: ', action);
-      }),
-      switchMap(action =>
-        this.cartService.deleteProdFromCart(action.documentId).pipe(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          map((resp: any) => {
-            return deleteFromCartSuccess(resp);
-          }),
-          catchError(() => {
-            return of(
-              deleteFromCartError({
-                error: 'Error al eliminar producto del carrito',
-              })
-            );
-          })
+    deleteCart$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(deleteFromCartRequest),
+        tap((action) => {
+          console.log('ACTION RECIBIDA EN DELETE: ', action);
+        }),
+        switchMap((action) =>
+          this.cartService.deleteProdFromCart(action.documentId).pipe(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            map(() => {
+              return deleteFromCartSuccess({documentId: action.documentId});
+            }),
+            catchError(() => {
+              return of(deleteFromCartError({
+                error: 'Error al eliminar producto del carrito'}));
+            })
+          )
         )
       )
-    )
-  );
+    );
 }

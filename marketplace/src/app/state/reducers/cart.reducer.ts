@@ -40,8 +40,13 @@ export const cartReducer = createReducer(
     }
   }),
   
-  on(deleteFromCartSuccess, (state, {documentId}) => ({ //Eliminar producto del carrito
-    ...state,
-    cartItems: state.cartItems.filter(item => item.documentId !== documentId) 
-  })),
+  on(deleteFromCartSuccess, (state, { documentId }) => {
+    const updatedCartItems = state.cartItems.filter(item => item.documentId !== documentId);
+    console.log('Cart items after deletion:', updatedCartItems, '----', documentId);
+    
+    return {
+      ...state,
+      cartItems: updatedCartItems
+    };
+  })
 );

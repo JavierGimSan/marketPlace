@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CartItem } from '../interfaces/cartItem.interface';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -84,7 +85,11 @@ export class CartService {
   }
 
   deleteOrderItem(documentId: string) {
-    return this.httpClient.delete(`${this.apiUrlBase}/order-items/${documentId}`)
+    return this.httpClient.delete(`${this.apiUrlBase}/order-items/${documentId}`).pipe(map(() => {
+      console.log(documentId);
+      return {documentId};
+    })
+  );
   }
 
   addProdToCart(item: CartItem, quantity: number) {
