@@ -5,6 +5,7 @@ export interface Order {
     date: Date;
     state: string;
     documentId: string;
+    price: number;
 }
 
 export interface CartState {

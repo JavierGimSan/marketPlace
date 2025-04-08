@@ -3,12 +3,12 @@ import { CartItem } from '../../shared/interfaces/cartItem.interface';
 
 export const createOrderRequest = createAction(
   '[Cart] Create Order Request',
-  props<{ quantity: number; date: Date; state: string }>()
+  props<{ quantity: number; date: Date; state: string, price: number }>()
 );
 
 export const createOrderSuccess = createAction(
   '[Cart] Create Order Success',
-  props<{ quantity: number; date: Date; state: string; documentId: string }>()
+  props<{ quantity: number; date: Date; state: string; documentId: string, price: number }>()
 );
 
 export const createOrderError = createAction(
@@ -40,12 +40,12 @@ export const deleteFromCartRequest = createAction( //Action para iniciar elimina
 );
 
 export const deleteFromCartSuccess = createAction( //Action para eliminar producto, paso el name del producto a eliminar.
-    '[Cart] Delete from Cart Error',
+    '[Cart] Delete from Cart Success',
     props<{documentId: string}>()
 );
 
 export const deleteFromCartError = createAction( //Si hay un ERROR a la hora de BORRAR un producto a la BBDD, se ejecuta esta action y no se modifica el store.
-    '[Cart] Delete from Cart Success',
+    '[Cart] Delete from Cart Error',
     props<{error: string}>()
 );
 

@@ -105,6 +105,7 @@ export class ProductComponent implements OnInit {
             quantity: this._itemsCount(),
             date: new Date(),
             state: 'active',
+            price: this.product.price,
           };
 
           this.store.dispatch(createOrderRequest(orderDetails));

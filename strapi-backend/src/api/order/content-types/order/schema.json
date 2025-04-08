@@ -32,6 +32,9 @@
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
       "onDelete": "CASCADE"
+    },
+    "price": {
+      "type": "decimal"
     }
   }
 }

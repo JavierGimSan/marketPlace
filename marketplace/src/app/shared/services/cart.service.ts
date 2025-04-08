@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CartItem } from '../interfaces/cartItem.interface';
-import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,12 +10,13 @@ export class CartService {
   private apiUrlBase = environment.apiUrlBase;
   private httpClient = inject(HttpClient);
 
-  createOrder(quantity: number, date: Date, state: string) {
+  createOrder(quantity: number, date: Date, state: string, price: number) {
     return this.httpClient.post(`${this.apiUrlBase}/orders`, {
       data: {
         quantity,
         date,
         state,
+        price,
       },
     });
   }
@@ -25,12 +25,11 @@ export class CartService {
     return this.httpClient.get(`${this.apiUrlBase}/orders/${orderId}`);
   }
 
-  updateOrder(documentId: string, quantity: number, date: Date, state: string) {
+  updateOrder(documentId: string, quantity: number, price: number) {
     return this.httpClient.put(`${this.apiUrlBase}/orders/${documentId}`, {
       data: {
         quantity,
-        date,
-        state,
+        price
       },
     });
   }
@@ -85,11 +84,7 @@ export class CartService {
   }
 
   deleteOrderItem(documentId: string) {
-    return this.httpClient.delete(`${this.apiUrlBase}/order-items/${documentId}`).pipe(map(() => {
-      console.log(documentId);
-      return {documentId};
-    })
-  );
+    return this.httpClient.delete(`${this.apiUrlBase}/order-items/${documentId}`);
   }
 
   addProdToCart(item: CartItem, quantity: number) {

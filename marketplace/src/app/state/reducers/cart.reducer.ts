@@ -5,8 +5,8 @@ import { addToCartSuccess, createOrderSuccess, deleteFromCartSuccess,  } from '.
 export const cartReducer = createReducer(
   initialCartState,
 
-  on(createOrderSuccess, (state, { quantity, date, state: orderState, documentId }) => {
-    console.log('Actualizando el estado:', { quantity, date, state, documentId });
+  on(createOrderSuccess, (state, { quantity, date, state: orderState, documentId, price }) => {
+    console.log('Actualizando el estado:', { quantity, date, state, documentId, price });
     return {
       ...state,
       order: {
@@ -14,6 +14,7 @@ export const cartReducer = createReducer(
         date,
         state: orderState,
         documentId,
+        price,
       },
     };
   }),
