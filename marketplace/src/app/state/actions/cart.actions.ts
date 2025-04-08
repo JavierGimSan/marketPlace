@@ -16,6 +16,21 @@ export const createOrderError = createAction(
   props<{ error: string }>()
 );
 
+export const updateOrderRequest = createAction(
+  '[Cart] Update Order Request',
+  props<{orderId: string, quantity: number, price: number}>()
+);
+
+export const updateOrderSuccess = createAction(
+  '[Cart] Update Order Totals Success',
+  props<{ quantity: number; price: number }>()
+);
+
+export const updateOrderError = createAction(
+  '[Cart] Update Order Totals Error',
+  props<{ error: string }>()
+);
+
 export const addToCart = createAction(
   //Desencadena el proceso de añadir un producto.
   '[Cart] Add To Cart',
