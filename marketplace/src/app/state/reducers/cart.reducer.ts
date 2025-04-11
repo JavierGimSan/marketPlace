@@ -1,9 +1,14 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialCartState } from '../app.state';
-import { addToCartSuccess, createOrderSuccess, deleteFromCartSuccess,  } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
+import { addToCartSuccess, createOrderSuccess, deleteFromCartSuccess, loadCartSuccess,  } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
 
 export const cartReducer = createReducer(
   initialCartState,
+
+  on(loadCartSuccess, (state, {cartItems}) => ({
+    ...state,
+    cartItems,
+  })),
 
   on(createOrderSuccess, (state, { quantity, date, state: orderState, documentId, price }) => {
     console.log('Actualizando el estado:', { quantity, date, state, documentId, price });

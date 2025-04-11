@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { inject, Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType,
+  ROOT_EFFECTS_INIT,
+} from '@ngrx/effects';
 import {
   addToCart,
   addToCartError,
@@ -14,6 +19,9 @@ import {
   updateOrderRequest,
   updateOrderSuccess,
   updateOrderError,
+  loadCartRequest,
+  loadCartSuccess,
+  loadCartError,
 } from '../actions/cart.actions';
 import { CartService } from '../../shared/services/cart.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
@@ -63,7 +71,8 @@ export class CartEffects {
 
   updateOrder$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateOrderRequest),tap(action => console.log('ACTION UPDATE ORDER', action)),
+      ofType(updateOrderRequest),
+      tap(action => console.log('ACTION UPDATE ORDER', action)),
       switchMap(({ orderId, quantity, price }) =>
         this.cartService.updateOrder(orderId, quantity, price).pipe(
           map(() => updateOrderSuccess({ quantity, price })),
@@ -76,6 +85,38 @@ export class CartEffects {
           )
         )
       )
+    )
+  );
+
+  loadCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadCartRequest),
+      switchMap(() =>
+        this.cartService.getOrderItems().pipe(
+          map((response: any) => {
+            const cartItems = response.data.map(
+              (item: any) => ({
+                ...item,
+                quantity: item.total_quantity,
+              }),
+              tap(() => console.log('ITEMS', response.item))
+            );
+            return loadCartSuccess({ cartItems });
+          }),
+          catchError(() =>
+            of(
+              loadCartError({ error: 'Error al cargar los datos del carrito' })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  init$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROOT_EFFECTS_INIT),
+      map(() => loadCartRequest())
     )
   );
 
@@ -224,15 +265,11 @@ export class CartEffects {
                 itemsResponse.data.forEach((item: any) => {
                   totalQuantity += item.total_quantity;
                   totalPrice += item.price * item.total_quantity;
-                  console.log(totalQuantity, ' ', totalPrice)
+                  console.log(totalQuantity, ' ', totalPrice);
                 });
-                
-                const orderId = itemsResponse;
-
-                console.log('ID DE LA ORDEN ACTUALIZADA: ', orderId); 
 
                 return of(
-                  deleteFromCartSuccess({ documentId: action.documentId}),
+                  deleteFromCartSuccess({ documentId: action.documentId }),
                   updateOrderRequest({
                     orderId: action.documentId,
                     quantity: totalQuantity,

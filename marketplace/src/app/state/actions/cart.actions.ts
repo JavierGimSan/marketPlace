@@ -64,16 +64,17 @@ export const deleteFromCartError = createAction( //Si hay un ERROR a la hora de 
     props<{error: string}>()
 );
 
-// export const getCartRequest = createAction( //Action para iniciar la carga de un carrito
-//     '[Cart] Get Cart Request',
-// );
+export const loadCartRequest = createAction(
+  '[Cart] Load Cart Requested',
+);
 
-// export const getCartSuccess = createAction( //Action para cargar carrito. Paso ? para cargar uno específico
-//     '[Cart] Get Cart Success',
-//     props<{}>()
-// );
+export const loadCartSuccess = createAction(
+  '[Cart] Load Cart Success',
+  props<{ cartItems: CartItem[] }>()
+);
 
-// export const getCartError = createAction( //Si va mal, se carga el error.
-//     '[Cart] Get Cart Error',
-//     props<{error: string}>()
-// );
+export const loadCartError = createAction(
+  '[Cart] Load Cart Error',
+  props<{error: string}>()
+);
+
