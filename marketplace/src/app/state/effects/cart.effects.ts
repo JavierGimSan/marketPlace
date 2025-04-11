@@ -63,7 +63,7 @@ export class CartEffects {
 
   updateOrder$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateOrderRequest),
+      ofType(updateOrderRequest),tap(action => console.log('ACTION UPDATE ORDER', action)),
       switchMap(({ orderId, quantity, price }) =>
         this.cartService.updateOrder(orderId, quantity, price).pipe(
           map(() => updateOrderSuccess({ quantity, price })),
@@ -89,7 +89,7 @@ export class CartEffects {
             const existingOrderItem = response.data.find(
               (orderItem: any) => orderItem.name === action.item.name
             );
-  
+
             if (existingOrderItem) {
               // Si el producto ya está en la orden, actualizamos su cantidad
               return this.cartService
@@ -113,18 +113,19 @@ export class CartEffects {
                       switchMap((itemsResponse: any) => {
                         let totalQuantity = 0;
                         let totalPrice = 0;
-  
+
                         itemsResponse.data.forEach((item: any) => {
                           totalQuantity += item.total_quantity;
                           totalPrice += item.price * item.total_quantity;
                         });
-  
+
                         return of(
                           addToCartSuccess({
                             item: {
                               ...existingOrderItem,
                               quantity:
-                                existingOrderItem.total_quantity + action.quantity,
+                                existingOrderItem.total_quantity +
+                                action.quantity,
                             },
                             quantity: action.quantity,
                           }),
@@ -164,12 +165,12 @@ export class CartEffects {
                       switchMap((itemsResponse: any) => {
                         let totalQuantity = 0;
                         let totalPrice = 0;
-  
+
                         itemsResponse.data.forEach((item: any) => {
                           totalQuantity += item.total_quantity;
                           totalPrice += item.price * item.total_quantity;
                         });
-  
+
                         return of(
                           addToCartSuccess({
                             item: resp.data,
@@ -206,7 +207,7 @@ export class CartEffects {
     )
   );
 
-  deleteCart$ = createEffect(() =>
+  deleteFromCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteFromCartRequest),
       tap(action => {
@@ -214,16 +215,40 @@ export class CartEffects {
       }),
       switchMap(action =>
         this.cartService.deleteProdFromCart(action.documentId).pipe(
-          map(() => {
-            return deleteFromCartSuccess({ documentId: action.documentId });
-          }),
-          catchError(() => {
-            return of(
+          switchMap(() =>
+            this.cartService.getOrderItems().pipe(
+              switchMap((itemsResponse: any) => {
+                let totalQuantity = 0;
+                let totalPrice = 0;
+
+                itemsResponse.data.forEach((item: any) => {
+                  totalQuantity += item.total_quantity;
+                  totalPrice += item.price * item.total_quantity;
+                  console.log(totalQuantity, ' ', totalPrice)
+                });
+                
+                const orderId = itemsResponse;
+
+                console.log('ID DE LA ORDEN ACTUALIZADA: ', orderId); 
+
+                return of(
+                  deleteFromCartSuccess({ documentId: action.documentId}),
+                  updateOrderRequest({
+                    orderId: action.documentId,
+                    quantity: totalQuantity,
+                    price: totalPrice,
+                  })
+                );
+              })
+            )
+          ),
+          catchError(() =>
+            of(
               deleteFromCartError({
                 error: 'Error al eliminar producto del carrito',
               })
-            );
-          })
+            )
+          )
         )
       )
     )
