@@ -1,12 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
 import { initialCartState } from '../app.state';
-import { addToCartSuccess, createOrderSuccess, deleteFromCartSuccess, loadCartSuccess,  } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
+import { addToCartSuccess, createOrderSuccess, deleteFromCartSuccess, loadCartSuccess, loadOrderSuccess,  } from '../actions/cart.actions'; //Acordarme de importar deleteFromCartSuccess
 
 export const cartReducer = createReducer(
   initialCartState,
 
   on(loadCartSuccess, (state, {cartItems}) => ({
     ...state,
+    cartItems,
+  })),
+
+  on(loadOrderSuccess, (state, { order, cartItems }) => ({
+    ...state,
+    order,
     cartItems,
   })),
 

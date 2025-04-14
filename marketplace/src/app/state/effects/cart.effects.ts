@@ -22,6 +22,9 @@ import {
   loadCartRequest,
   loadCartSuccess,
   loadCartError,
+  loadOrderRequest,
+  loadOrderError,
+  loadOrderSuccess,
 } from '../actions/cart.actions';
 import { CartService } from '../../shared/services/cart.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
@@ -41,11 +44,14 @@ export class CartEffects {
           .createOrder(action.quantity, action.date, action.state, action.price)
           .pipe(
             map((orderResponse: any) => {
+              const docId = orderResponse.data.documentId;
+              localStorage.setItem('orderId', docId); // Al crear una order, añadir su documentId al LocalStorage para mantener estado al recargar la página.
+
               console.log('TEST: Datos enviados al reducer:', {
                 quantity: orderResponse.data.quantity,
                 date: orderResponse.data.date,
                 state: orderResponse.data.state,
-                documentId: orderResponse.data.id,
+                documentId: docId,
                 price: orderResponse.data.price,
               });
               console.log('CONTENIDO ORDER: ', orderResponse);
@@ -53,7 +59,7 @@ export class CartEffects {
                 quantity: orderResponse.data.quantity,
                 date: orderResponse.data.date,
                 state: orderResponse.data.state,
-                documentId: orderResponse.data.documentId,
+                documentId: docId,
                 price: orderResponse.data.price,
               });
             }),
@@ -290,4 +296,38 @@ export class CartEffects {
       )
     )
   );
+
+  loadOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadOrderRequest),
+      switchMap(() => {
+        const orderId = localStorage.getItem('orderId');
+        if (!orderId) {
+          return of(loadOrderError({ error: 'No hay orderId' }));
+        } 
+        return this.cartService.getOrderItems().pipe(
+          map((resp: any) => {
+            const items = resp.data;
+            return loadOrderSuccess({
+              order: {
+                documentId: orderId,
+                quantity: items.reduce((sum: number, i: any) => sum + i.total_quantity, 0),
+                price: items.reduce((sum: number, i: any) => sum + i.total_quantity * i.price, 0),
+                date: new Date(),
+                state: 'active'
+              },
+              cartItems: items.map((i: any) => ({
+                ...i,
+                quantity: i.total_quantity
+              }))
+            });
+          }),
+          catchError(() =>
+            of(loadOrderError({ error: 'Error al cargar la orden' }))
+          )
+        );
+      })
+    )
+  );
+  
 }
