@@ -1,27 +1,37 @@
 <!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
 <div class="flex ml-30">
-    <button class="font-bold text-xl bg-blue-900 text-white rounded pl-20 pr-20 cursor-pointer items-center mt-20 mb-20" [routerLink]="'/products'">← Atrás</button>
-    <h1 class="cart-title font-bold text-5xl mt-20 mb-20 ml-30">Carrito</h1>
+  <button
+    class="font-bold text-xl bg-blue-900 text-white rounded pl-20 pr-20 cursor-pointer items-center mt-20 mb-20"
+    [routerLink]="'/products'">
+    ← Atrás
+  </button>
+  <h1 class="cart-title font-bold text-5xl mt-20 mb-20 ml-30">Carrito</h1>
 </div>
 
 @for (product of cartItems; track product.documentId) {
-<div class="cart-item-container flex justify-between mb-15 p-5 bg-blue-100 rounded-2xl">
-  <div class="product-data-container flex">
-    <div class="product-image mr-5"><img [src]="product.image_url" alt="Imagen del producto"></div>
-    <div class="">
-      <h2 class="font-bold text-2xl mb-5">{{product.name}}</h2>
-      <h2>{{product.author}}</h2>
+  <div
+    class="cart-item-container flex justify-between mb-15 p-5 bg-blue-100 rounded-2xl">
+    <div class="product-data-container flex">
+      <div class="product-image mr-5">
+        <img [src]="product.image_url" alt="Imagen del producto" />
+      </div>
+      <div class="">
+        <h2 class="font-bold text-2xl mb-5">{{ product.name }}</h2>
+        <h2>{{ product.author }}</h2>
+      </div>
     </div>
-  </div>
-  
-  <div class="flex">
-    <div class="product-quantity-container">
-      <div class="flex justify-center mt-10">
-        <div class="">
-          <span class="mr-3 ">Cantidad</span>
-          
-          <!-- ********INICIO Botón de aumentar/reducir cantidad******** -->
-          <form class="max-w-xs mx-auto">
+
+    <div class="flex">
+      <div class="product-quantity-container">
+        <div class="flex justify-center mt-10">
+          <div class="">
+            <h3 class="mt-6 font-bold text-3xl">
+              ({{ product.price }}€ x {{ product.quantity }}ud.)
+            </h3>
+            <!-- <span class="mr-3 ">Cantidad</span> -->
+
+            <!-- ********INICIO Botón de aumentar/reducir cantidad******** -->
+            <!-- <form class="max-w-xs mx-auto">
             <div class="relative flex items-center max-w-[8rem]">
               <button
                 type="button"
@@ -48,7 +58,7 @@
                 data-input-counter
                 aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="0"
+                placeholder={{product.quantity}}
                 required />
               <button
                 type="button"
@@ -70,23 +80,32 @@
                 </svg>
               </button>
             </div>
-          </form>
-          <!-- ********FIN del botón de aumentar/reducir cantidad******** -->
-
+          </form> -->
+            <!-- ********FIN del botón de aumentar/reducir cantidad******** -->
+          </div>
         </div>
       </div>
-    </div>
-    <div class="flex flex-col items-end ml-20 mr-10">
-      <div class="bin-icon w-7 cursor-pointer"><img src="assets/images/bin.png" alt="Botón de eliminar producto"  tabindex=0 (click)="deleteProduct(product.documentId)"></div>
-      <h3 class="product-price mt-60 font-bold text-3xl">{{product.price * product.quantity}} €</h3>
+      <div class="flex flex-col items-end ml-20 mr-10">
+        <div class="bin-icon w-7 cursor-pointer">
+          <img
+            src="assets/images/bin.png"
+            alt="Botón de eliminar producto"
+            tabindex="0"
+            (click)="deleteProduct(product.documentId)" />
+        </div>
+        <h3 class="product-price mt-60 font-bold text-3xl">
+          {{ product.price * product.quantity }} €
+        </h3>
+      </div>
     </div>
   </div>
-
-</div>
 }
 <div class="flex flex-col items-end mr-105 mb-30">
-    <div>
-        <h2 class="font-bold text-xl mb-5">Total:</h2>
-    </div>
-    <button class="font-bold text-xl bg-blue-900 text-white rounded pl-30 pr-30 pt-4 pb-4 cursor-pointer">Checkout</button>
+  <div>
+    <h2 class="font-bold text-xl mb-5">Total:</h2>
+  </div>
+  <button
+    class="font-bold text-xl bg-blue-900 text-white rounded pl-30 pr-30 pt-4 pb-4 cursor-pointer">
+    Checkout
+  </button>
 </div>
