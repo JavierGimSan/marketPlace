@@ -15,11 +15,11 @@
 
         @if (!isFetching()) {
           @for (product of products(); track product.id) {
-            <div class="group relative border border-gray-300 mx-0 sm:border-0 shrink-0 w-[90%] max-w-xs sm:w-auto">
+            <div class="group relative border border-gray-300 mx-0 sm:border-0 shrink-0 w-[100%] max-w-xs sm:w-auto">
               <img
                 [src]="product.image_url"
                 [alt]="product.name"
-                class="aspect-square inline-block rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80" />
+                class="aspect-square inline-block mt-[15px] rounded-xl bg-white-200 object-contain group-hover:opacity-75 lg:aspect-auto lg:h-80" />
               <div class="mt-4 flex sm:justify-between justify-center w-full">
                 <div>
                   <h3 class="text-sm text-gray-00">
