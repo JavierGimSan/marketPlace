@@ -8,9 +8,9 @@ import { RouterOutlet } from '@angular/router';
   imports: [HeaderComponent, SidebarComponent, RouterOutlet],
   template: `
     <app-header></app-header>
-    <app-sidebar></app-sidebar>
-    <div class="content">
-      <router-outlet></router-outlet>
+    <app-sidebar class="hidden sm:block"></app-sidebar>
+    <div class="sm:mt-[180px] sm:ml-[250px]">
+      <router-outlet ></router-outlet>
     </div>
     `,
   styleUrl: './theme-base.component.scss',
