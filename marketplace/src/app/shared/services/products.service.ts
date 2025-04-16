@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Product } from '../interfaces/product.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +15,8 @@ export class ProductsService {
     return this.httpClient.get(`${this.apiUrlBase}/products`);
   }
 
-  loadProduct(productId: string) {
-    return this.httpClient.get(`${this.apiUrlBase}/products/${productId}`);
+  loadProduct(productId: string):Observable<Product> {
+    return this.httpClient.get<Product>(`${this.apiUrlBase}/products/${productId}`);
   }
 
   loadProductPromotions(productId: string) {

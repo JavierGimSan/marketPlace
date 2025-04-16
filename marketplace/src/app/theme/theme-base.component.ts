@@ -16,4 +16,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './theme-base.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ThemeBaseComponent { }
+export class ThemeBaseComponent {
+ }

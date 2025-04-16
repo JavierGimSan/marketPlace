@@ -33,16 +33,16 @@ import { Router } from '@angular/router';
           <span class="sr-only">Open user menu</span>
           @if (!userLoggedIn() || avatarUrl() === "") {
             <img
-              class="size-8 rounded-full"
+              class="size-10 rounded-full"
               src="https://banner2.cleanpng.com/20190617/iwq/kisspng-computer-icons-portable-network-graphics-clip-art-paula-toth-on-odyssey-1713886393505.webp"
-              alt="" />
+              alt="Icono de usuario por defecto" />
           } @else {
             <!-- Si está loggeado mostrar el icono de la API-->
           <!-- En src poner el dato dinámico que devuelve la url de la imagen-->
             <img
-              class="size-8 rounded-full"
+              class="size-10 rounded-full"
               [src]="avatarUrl()"
-              alt="" />
+              alt="Icono de usuario personalizado" />
           }
         </button>
       </div>
@@ -126,7 +126,6 @@ export class ProfileMenuComponent implements OnInit{
     this.userService.getUser().subscribe({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       next: (response: any) => {
-        console.log(response.username);
         const avatarApiUrl = "https://ui-avatars.com/api/?name=";
         const username = response.username;
         const avatarUrl = `${avatarApiUrl} ${username}`
@@ -146,9 +145,9 @@ export class ProfileMenuComponent implements OnInit{
   @ViewChild('dropdown') dropdown!: ElementRef;
   @HostListener('document:click', ['$event']) onClick(event: MouseEvent) {
     if (this.dropdown.nativeElement.contains(event.target as Node)) {
-      console.log('click hostListener inside component');
+      // console.log('click hostListener inside component');
     } else {
-      console.log('click hostListener outside component');
+      // console.log('click hostListener outside component');
       this.dropdownEsVisible = false;
     }
   }

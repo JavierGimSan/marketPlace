@@ -1,0 +1,333 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { inject, Injectable } from '@angular/core';
+import {
+  Actions,
+  createEffect,
+  ofType,
+  ROOT_EFFECTS_INIT,
+} from '@ngrx/effects';
+import {
+  addToCart,
+  addToCartError,
+  addToCartSuccess,
+  createOrderError,
+  createOrderRequest,
+  createOrderSuccess,
+  deleteFromCartError,
+  deleteFromCartRequest,
+  deleteFromCartSuccess,
+  updateOrderRequest,
+  updateOrderSuccess,
+  updateOrderError,
+  loadCartRequest,
+  loadCartSuccess,
+  loadCartError,
+  loadOrderRequest,
+  loadOrderError,
+  loadOrderSuccess,
+} from '../actions/cart.actions';
+import { CartService } from '../../shared/services/cart.service';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+@Injectable()
+export class CartEffects {
+  private actions$ = inject(Actions);
+  private store = inject(Store);
+  constructor(private cartService: CartService) {}
+
+  createOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createOrderRequest),
+      switchMap(action =>
+        this.cartService
+          .createOrder(action.quantity, action.date, action.state, action.price)
+          .pipe(
+            map((orderResponse: any) => {
+              const docId = orderResponse.data.documentId;
+              localStorage.setItem('orderId', docId); // Al crear una order, añadir su documentId al LocalStorage para mantener estado al recargar la página.
+
+              console.log('TEST: Datos enviados al reducer:', {
+                quantity: orderResponse.data.quantity,
+                date: orderResponse.data.date,
+                state: orderResponse.data.state,
+                documentId: docId,
+                price: orderResponse.data.price,
+              });
+              console.log('CONTENIDO ORDER: ', orderResponse);
+              return createOrderSuccess({
+                quantity: orderResponse.data.quantity,
+                date: orderResponse.data.date,
+                state: orderResponse.data.state,
+                documentId: docId,
+                price: orderResponse.data.price,
+              });
+            }),
+            catchError(() => {
+              return of(
+                createOrderError({
+                  error: 'Error al crear la orden',
+                })
+              );
+            })
+          )
+      )
+    )
+  );
+
+  updateOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateOrderRequest),
+      tap(action => console.log('ACTION UPDATE ORDER', action)),
+      switchMap(({ orderId, quantity, price }) =>
+        this.cartService.updateOrder(orderId, quantity, price).pipe(
+          map(() => updateOrderSuccess({ quantity, price })),
+          catchError(() =>
+            of(
+              updateOrderError({
+                error: 'Error al actualizar los totales de la orden',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  loadCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadCartRequest),
+      switchMap(() =>
+        this.cartService.getOrderItems().pipe(
+          map((response: any) => {
+            const cartItems = response.data.map(
+              (item: any) => ({
+                ...item,
+                quantity: item.total_quantity,
+              }),
+              tap(() => console.log('ITEMS', response.item))
+            );
+            return loadCartSuccess({ cartItems });
+          }),
+          catchError(() =>
+            of(
+              loadCartError({ error: 'Error al cargar los datos del carrito' })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  init$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROOT_EFFECTS_INIT),
+      map(() => loadCartRequest())
+    )
+  );
+
+  addToCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addToCart),
+      tap(action => console.log('Action recibida en addToCart:', action)),
+      switchMap(action =>
+        this.cartService.getOrderItems().pipe(
+          switchMap((response: any) => {
+            const existingOrderItem = response.data.find(
+              (orderItem: any) => orderItem.name === action.item.name
+            );
+
+            if (existingOrderItem) {
+              // Si el producto ya está en la orden, actualizamos su cantidad
+              return this.cartService
+                .updateOrderItem(
+                  existingOrderItem.documentId,
+                  existingOrderItem.total_quantity + action.quantity
+                )
+                .pipe(
+                  tap(() => {
+                    console.log(
+                      'ACTUALIZAR CANTIDAD: ',
+                      existingOrderItem.total_quantity,
+                      '+',
+                      action.quantity,
+                      '=',
+                      existingOrderItem.total_quantity + action.quantity
+                    );
+                  }),
+                  switchMap(() =>
+                    this.cartService.getOrderItems().pipe(
+                      switchMap((itemsResponse: any) => {
+                        let totalQuantity = 0;
+                        let totalPrice = 0;
+
+                        itemsResponse.data.forEach((item: any) => {
+                          totalQuantity += item.total_quantity;
+                          totalPrice += item.price * item.total_quantity;
+                        });
+
+                        return of(
+                          addToCartSuccess({
+                            item: {
+                              ...existingOrderItem,
+                              quantity:
+                                existingOrderItem.total_quantity +
+                                action.quantity,
+                            },
+                            quantity: action.quantity,
+                          }),
+                          updateOrderRequest({
+                            orderId: action.orderId,
+                            quantity: totalQuantity,
+                            price: totalPrice,
+                          })
+                        );
+                      })
+                    )
+                  ),
+                  catchError(() =>
+                    of(
+                      addToCartError({
+                        error:
+                          'Error al actualizar la cantidad del producto en el carrito',
+                      })
+                    )
+                  )
+                );
+            } else {
+              // Si el producto no está en la orden, lo creamos
+              return this.cartService
+                .createOrderItem(
+                  action.quantity,
+                  action.item.price,
+                  action.item.documentId,
+                  action.orderId,
+                  action.item.author,
+                  action.item.name,
+                  action.item.image_url
+                )
+                .pipe(
+                  switchMap((resp: any) =>
+                    this.cartService.getOrderItems().pipe(
+                      switchMap((itemsResponse: any) => {
+                        let totalQuantity = 0;
+                        let totalPrice = 0;
+
+                        itemsResponse.data.forEach((item: any) => {
+                          totalQuantity += item.total_quantity;
+                          totalPrice += item.price * item.total_quantity;
+                        });
+
+                        return of(
+                          addToCartSuccess({
+                            item: resp.data,
+                            quantity: resp.data.total_quantity,
+                          }),
+                          updateOrderRequest({
+                            orderId: action.orderId,
+                            quantity: totalQuantity,
+                            price: totalPrice,
+                          })
+                        );
+                      })
+                    )
+                  ),
+                  catchError(() =>
+                    of(
+                      addToCartError({
+                        error: 'Error al añadir producto al carrito',
+                      })
+                    )
+                  )
+                );
+            }
+          }),
+          catchError(() =>
+            of(
+              addToCartError({
+                error: 'Error al obtener los items del carrito',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  deleteFromCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteFromCartRequest),
+      tap(action => {
+        console.log('ACTION RECIBIDA EN DELETE: ', action);
+      }),
+      switchMap(action =>
+        this.cartService.deleteProdFromCart(action.documentId).pipe(
+          switchMap(() =>
+            this.cartService.getOrderItems().pipe(
+              switchMap((itemsResponse: any) => {
+                let totalQuantity = 0;
+                let totalPrice = 0;
+
+                itemsResponse.data.forEach((item: any) => {
+                  totalQuantity += item.total_quantity;
+                  totalPrice += item.price * item.total_quantity;
+                  console.log(totalQuantity, ' ', totalPrice);
+                });
+
+                return of(
+                  deleteFromCartSuccess({ documentId: action.documentId }),
+                  updateOrderRequest({
+                    orderId: action.documentId,
+                    quantity: totalQuantity,
+                    price: totalPrice,
+                  })
+                );
+              })
+            )
+          ),
+          catchError(() =>
+            of(
+              deleteFromCartError({
+                error: 'Error al eliminar producto del carrito',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  loadOrder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadOrderRequest),
+      switchMap(() => {
+        const orderId = localStorage.getItem('orderId');
+        if (!orderId) {
+          return of(loadOrderError({ error: 'No hay orderId' }));
+        } 
+        return this.cartService.getOrderItems().pipe(
+          map((resp: any) => {
+            const items = resp.data;
+            return loadOrderSuccess({
+              order: {
+                documentId: orderId,
+                quantity: items.reduce((sum: number, i: any) => sum + i.total_quantity, 0),
+                price: items.reduce((sum: number, i: any) => sum + i.total_quantity * i.price, 0),
+                date: new Date(),
+                state: 'active'
+              },
+              cartItems: items.map((i: any) => ({
+                ...i,
+                quantity: i.total_quantity
+              }))
+            });
+          }),
+          catchError(() =>
+            of(loadOrderError({ error: 'Error al cargar la orden' }))
+          )
+        );
+      })
+    )
+  );
+  
+}

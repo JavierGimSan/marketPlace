@@ -9,8 +9,7 @@ import { RouterOutlet } from '@angular/router';
   <app-header></app-header>
   <router-outlet></router-outlet>
   `,
-  styleUrl: './landing-theme.component.scss'
 })
 export class LandingThemeComponent {
-
+  
 }
